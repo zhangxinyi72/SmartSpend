@@ -492,23 +492,3 @@ Runtime modules in **`app.js`** also include Node core: **`http`**, **`fs`**, **
 
 ---
 
-## Submission checklist
-
-**Coding implementation ZIP**
-
-- [ ] All source: `.html`, `css/`, `js/`, `app.js`, `start-smartspend.cjs`, `scripts/`, `package.json`, `package-lock.json`  
-- [ ] `vercel.json` if graders should reproduce proxy setup  
-- [ ] `README.md` (this file)  
-- [ ] `.env.example` only — **not** real `.env`  
-- [ ] `expenses_seed.json`, `budgets_seed.json` as sample data reference  
-- [ ] Optional: any images/media **you reference** from the site  
-- [ ] Exclude `node_modules/` (run `npm install` after unzip)  
-
-**Presentation (if required by course)**
-
-- [ ] Slide deck / PDF / Figma link per instructor instructions  
-- [ ] Live demo of core flows  
-
----
-
-*README revised to match the repository layout and `package.json` scripts as of project snapshot; default HTTP port **3001** per `app.js`.*
