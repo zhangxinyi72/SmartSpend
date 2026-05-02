@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://smartspend-ccwe.onrender.com/api/:path*"
+    }
+  ]
+}

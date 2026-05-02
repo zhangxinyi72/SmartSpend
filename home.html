@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartSpend — Dashboard</title>
+    <script>document.documentElement.dataset.theme = localStorage.getItem('smartspendTheme') || 'night';</script>
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/pro-upgrade.css" />
+    <link rel="stylesheet" href="./css/dashboard.css" />
+</head>
+<body>
+
+<div class="home-mobile-topbar">
+    <div class="home-mobile-brand">
+        <span class="home-mobile-brand__logo">▣</span>
+        <span class="home-mobile-brand__text">SmartSpend</span>
+    </div>
+    <div class="home-mobile-user">
+        <span class="home-mobile-user__avatar">K</span>
+        <span class="home-mobile-user__name" id="home-mobile-user-name">User</span>
+        <span class="home-mobile-user__logout">↪</span>
+    </div>
+</div>
+
+<!-- Header -->
+<header class="dashboard-header">
+    <div class="container">
+        <p class="dashboard-header__greeting" id="welcomeText">Welcome back 👋</p>
+        <h1 class="dashboard-header__title">SmartSpend</h1>
+        <p class="dashboard-header__subtitle" id="month-label">Loading…</p>
+    </div>
+</header>
+
+<!-- Summary Cards (float over header) -->
+<div class="summary-cards-wrap">
+    <div class="summary-cards">
+        <div class="summary-card summary-card--purple">
+            <div class="summary-card__label">Total Spent</div>
+            <div class="summary-card__value" id="stat-spent">—</div>
+            <div class="summary-card__trend">↑ 12% vs last month</div>
+        </div>
+        <div class="summary-card summary-card--blue">
+            <div class="summary-card__label">Budget</div>
+            <div class="summary-card__value" id="stat-budget">—</div>
+            <div class="summary-card__trend">6 categories</div>
+        </div>
+        <div class="summary-card summary-card--green" id="stat-remaining-card">
+            <div class="summary-card__label">Remaining</div>
+            <div class="summary-card__value" id="stat-remaining">—</div>
+            <div class="summary-card__trend" id="stat-remaining-pct">48% of budget left</div>
+        </div>
+    </div>
+</div>
+
+<main class="page-content">
+
+    <!-- Quick Actions -->
+    <p class="section-title">Quick Actions</p>
+    <nav class="quick-actions" style="margin-bottom:var(--spacing-lg)">
+        <a class="quick-action-btn quick-action-btn--add" href="expense.html">
+            <div class="quick-action-btn__icon">➕</div>
+            <span class="quick-action-btn__label">Add Expense</span>
+        </a>
+        <a class="quick-action-btn quick-action-btn--analytics" href="analytics.html">
+            <div class="quick-action-btn__icon">📊</div>
+            <span class="quick-action-btn__label">Analytics</span>
+        </a>
+        <a class="quick-action-btn quick-action-btn--budget" href="budget.html">
+            <div class="quick-action-btn__icon">💰</div>
+            <span class="quick-action-btn__label">Budget</span>
+        </a>
+    </nav>
+
+    <!-- Filter chip (shown when category filter active) -->
+    <div id="filter-chip-wrap"></div>
+
+    <!-- Recent Expenses -->
+    <div class="card recent-expenses-card">
+        <div class="card-header">
+            <span class="card-title" id="expenses-list-title"><span class="recent-title-icon">🕒</span>Recent Expenses</span>
+            <a class="see-all-link" href="analytics.html">See All</a>
+        </div>
+        <div id="recent-expenses-list"></div>
+    </div>
+
+</main>
+
+<!-- Bottom Nav / Sidebar -->
+<nav class="bottom-nav">
+    <div class="sidebar-logo">SmartSpend</div>
+    <a class="bottom-nav__item active" href="home.html">
+        <span class="bottom-nav__icon">🏠</span>
+        <span>Home</span>
+    </a>
+    <a class="bottom-nav__item bottom-nav__item--add" href="expense.html">
+        <span class="bottom-nav__icon">➕</span>
+        <span>Expense</span>
+    </a>
+    <a class="bottom-nav__item" href="analytics.html">
+        <span class="bottom-nav__icon">📊</span>
+        <span>Analytics</span>
+    </a>
+    <a class="bottom-nav__item" href="budget.html">
+        <span class="bottom-nav__icon">💰</span>
+        <span>Budget</span>
+    </a>
+    <a class="bottom-nav__item" href="account.html">
+        <span class="bottom-nav__icon">👤</span>
+        <span>Account</span>
+    </a>
+</nav>
+
+<div id="toast-container" class="toast-container"></div>
+<script type="module" src="./js/theme.js"></script>
+<script type="module" src="./js/dashboard.js"></script>
+<script type="module" src="./js/chatbot.js"></script>
+<script type="module" src="./js/insight-engine.js"></script>
+</body>
+</html>

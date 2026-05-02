@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartSpend — Expense</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('smartspendTheme') || 'night';</script>
+  <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/pro-upgrade.css" />
+  <link rel="stylesheet" href="css/expense.css" />
+</head>
+<body>
+
+  <!-- Gradient header with back button -->
+  <div class="page-header">
+    <a class="back-btn" href="home.html">←</a>
+    <h1 class="page-header__title" id="page-title">Add Expense</h1>
+  </div>
+
+  <main class="page-content">
+    <form class="expense-form" id="expense-form" novalidate>
+      <div class="expense-form-mobile-heading">
+        <span class="expense-form-mobile-heading__icon">⊕</span>
+        <span>New Transaction</span>
+      </div>
+
+      <!-- Category -->
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <select class="form-input category-select-mobile" id="input-category-mobile">
+          <option value="">Select category</option>
+        </select>
+        <div class="category-grid" id="category-grid"></div>
+        <div class="form-error" id="error-category">Please select a category.</div>
+      </div>
+
+      <!-- Amount -->
+      <div class="form-group">
+        <label class="form-label" for="input-amount">Amount</label>
+        <div class="amount-wrap">
+          <span class="amount-wrap__symbol">$</span>
+          <input
+            class="form-input amount-input"
+            id="input-amount"
+            type="number"
+            inputmode="decimal"
+            min="0.01"
+            step="0.01"
+            placeholder="0.00"
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-error" id="error-amount">Please enter an amount greater than $0.</div>
+      </div>
+
+      <!-- Date -->
+      <div class="form-group">
+        <label class="form-label" for="input-date">Date</label>
+        <input class="form-input" id="input-date" type="date" />
+        <div class="form-error" id="error-date">Please select a date.</div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label class="form-label" for="input-desc">
+          Description <span style="font-weight:400;text-transform:none;font-size:0.8rem;color:var(--color-text-muted)">(optional)</span>
+        </label>
+        <input class="form-input" id="input-desc" type="text" placeholder="e.g. Lunch at cafe" maxlength="100" />
+      </div>
+
+      <!-- Submit -->
+      <div class="form-actions">
+        <button type="submit" class="btn btn--submit btn--full" id="submit-btn">Add Expense</button>
+      </div>
+
+    </form>
+
+    <!-- Delete (edit mode only) -->
+    <div class="delete-zone" id="delete-zone" style="display:none">
+      <button type="button" class="btn btn--danger btn--full" id="delete-btn">Delete Expense</button>
+    </div>
+
+    <section class="expense-recent-mobile">
+      <h2 class="expense-recent-mobile__title">Recent Expenses</h2>
+      <p class="expense-recent-mobile__subtitle">Your last 5 transactions</p>
+      <div id="recent-expense-list-mobile"></div>
+    </section>
+  </main>
+
+  <!-- Bottom Nav / Sidebar -->
+  <nav class="bottom-nav">
+    <div class="sidebar-logo">SmartSpend</div>
+    <a class="bottom-nav__item" href="home.html">
+      <span class="bottom-nav__icon">🏠</span>
+      <span>Home</span>
+    </a>
+    <a class="bottom-nav__item active bottom-nav__item--add" href="expense.html">
+      <span class="bottom-nav__icon">➕</span>
+      <span>Expense</span>
+    </a>
+    <a class="bottom-nav__item" href="analytics.html">
+      <span class="bottom-nav__icon">📊</span>
+      <span>Analytics</span>
+    </a>
+    <a class="bottom-nav__item" href="budget.html">
+      <span class="bottom-nav__icon">💰</span>
+      <span>Budget</span>
+    </a>
+    <a class="bottom-nav__item" href="account.html">
+      <span class="bottom-nav__icon">👤</span>
+      <span>Account</span>
+    </a>
+  </nav>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script type="module" src="./js/theme.js"></script>
+  <script type="module" src="js/expense.js"></script>
+  <script type="module" src="./js/chatbot.js"></script>
+</body>
+</html>

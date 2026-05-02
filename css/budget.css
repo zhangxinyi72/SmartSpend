@@ -1,0 +1,520 @@
+.budget-header {
+    min-height: 190px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.budget-mobile-summary {
+    display: none;
+}
+
+.budget-section-heading {
+    display: none;
+}
+
+.budget-health-card {
+    padding: 24px;
+    margin-bottom: 24px;
+    border-radius: 22px;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: var(--shadow-sm);
+}
+
+.budget-health-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 10px;
+}
+
+.budget-health-label {
+    font-size: 0.94rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+}
+
+.budget-health-value {
+    font-size: 1.05rem;
+    color: var(--color-text);
+    font-weight: 800;
+}
+
+.savings-planner-card {
+    padding: 24px;
+    margin-bottom: 24px;
+    border-radius: 22px;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: var(--shadow-sm);
+}
+
+.savings-planner-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    justify-items: center;
+}
+
+.savings-section {
+    width: min(100%, 640px);
+    padding: 20px;
+    border-radius: 18px;
+    background: var(--color-surface-alt);
+    border: 1px solid var(--color-border);
+}
+
+.savings-section__title {
+    margin-bottom: 6px;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--color-text);
+}
+
+.savings-section__subtitle {
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+
+.savings-plan-group[hidden] {
+    display: none;
+}
+
+.savings-result {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: #f8fafc;
+    border: 1px solid var(--color-border);
+    font-size: 0.92rem;
+    color: var(--color-text);
+    line-height: 1.5;
+}
+
+.savings-result strong {
+    color: var(--color-primary);
+}
+
+.suggestion-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.suggestion-item {
+    font-size: 0.9rem;
+    color: var(--color-text);
+}
+
+.savings-actions {
+    margin-top: 12px;
+}
+
+#budget-cards-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.budget-card {
+    padding: 22px;
+    margin-bottom: 0;
+    border-radius: 22px;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    border-left: 4px solid transparent;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.budget-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+.budget-card--over { border-left-color: var(--color-danger); }
+
+.budget-card__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.budget-card__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.budget-card__name {
+    flex: 1;
+    font-size: 1.02rem;
+    font-weight: 700;
+}
+
+.budget-card__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.budget-card__over-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    margin-left: 8px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: #fef2f2;
+    color: var(--color-danger);
+    font-size: 0.7rem;
+    font-weight: 800;
+}
+
+.budget-card__edit-btn {
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+    font-size: 0.84rem;
+    font-weight: 800;
+}
+.budget-card__edit-btn:hover { background: #e7ddfe; }
+
+.budget-card__remove-btn {
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: #fff5f5;
+    color: var(--color-danger);
+    border: 1px solid #fecaca;
+    font-size: 0.84rem;
+    font-weight: 800;
+}
+.budget-card__remove-btn:hover { background: #fee2e2; }
+.budget-card__remove-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.budget-card__amounts {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-bottom: 6px;
+}
+.budget-card__amounts strong { color: var(--color-text); font-weight: 800; }
+
+.budget-card__pct {
+    font-size: 0.88rem;
+    font-weight: 800;
+}
+.budget-card__pct--green { color: var(--color-success); }
+.budget-card__pct--yellow { color: var(--color-warning); }
+.budget-card__pct--red { color: var(--color-danger); }
+
+.budget-edit-form {
+    display: none;
+    margin-top: 14px;
+    gap: 10px;
+    align-items: center;
+}
+.budget-edit-form.visible { display: flex; }
+
+.budget-edit-input {
+    flex: 1;
+    padding: 12px 14px;
+    border: 1.5px solid var(--color-border);
+    border-radius: 14px;
+    font-size: 0.96rem;
+    outline: none;
+}
+.budget-edit-input:focus {
+    border-color: rgba(111, 78, 246, 0.85);
+    box-shadow: 0 0 0 4px rgba(111, 78, 246, 0.12);
+}
+
+.budget-save-btn {
+    padding: 12px 16px;
+    border-radius: 14px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    font-size: 0.9rem;
+    font-weight: 800;
+}
+.budget-save-btn:hover { opacity: 0.94; }
+.budget-save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.add-budget-section { margin-top: 24px; }
+
+.add-budget-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--color-text-muted);
+    font-size: 0.96rem;
+    font-weight: 800;
+    transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+.add-budget-btn:hover {
+    border-color: var(--color-primary);
+    background: #f5f3ff;
+    color: var(--color-primary);
+}
+.add-budget-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.add-budget-form {
+    display: none;
+    margin-top: 14px;
+    padding: 22px;
+    border-radius: 22px;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: var(--shadow-sm);
+}
+.add-budget-form.visible { display: block; }
+
+.add-budget-form select {
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 14px 16px;
+    border: 1.5px solid var(--color-border);
+    border-radius: 16px;
+    background: #fff;
+}
+.add-budget-form select:focus {
+    border-color: rgba(111, 78, 246, 0.85);
+    box-shadow: 0 0 0 4px rgba(111, 78, 246, 0.12);
+    outline: none;
+}
+
+.add-budget-form__row {
+    display: flex;
+    gap: 10px;
+}
+
+.add-budget-note {
+    margin-top: 12px;
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+}
+
+@media (max-width: 900px) {
+    .budget-header {
+        min-height: 132px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 22px var(--page-gutter) 18px;
+    }
+
+    .budget-header__title {
+        font-size: 1.6rem;
+    }
+
+    .budget-header__subtitle {
+        margin-top: 4px;
+        font-size: 0.88rem;
+    }
+
+    .page-content {
+        padding-top: 16px;
+    }
+
+    .budget-mobile-summary {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin-bottom: 10px;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .budget-mobile-summary__card {
+        padding: 9px 8px;
+        color: #fff;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 6px 14px rgba(15, 23, 42, 0.18);
+    }
+
+    .budget-mobile-summary__card--budget {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    }
+
+    .budget-mobile-summary__card--spent {
+        background: linear-gradient(135deg, #7c3aed 0%, #c026d3 100%);
+    }
+
+    .budget-mobile-summary__card--left {
+        background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    }
+
+    .budget-mobile-summary__label {
+        margin-bottom: 8px;
+        font-size: 0.64rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+    .budget-mobile-summary__value {
+        font-size: 1.12rem;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+    }
+
+    .budget-mobile-summary__meta {
+        margin-top: 4px;
+        font-size: 0.66rem;
+        opacity: 0.95;
+    }
+
+    .budget-section-heading {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--color-text);
+    }
+
+    .budget-section-heading--cards {
+        margin-top: 12px;
+    }
+
+    .budget-health-card {
+        padding: 12px;
+        margin-bottom: 12px;
+        border-radius: 14px;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+    }
+
+    .budget-health-row {
+        margin-bottom: 8px;
+    }
+
+    .budget-health-label {
+        font-size: 0.78rem;
+    }
+
+    .budget-health-value {
+        font-size: 0.92rem;
+    }
+
+    .savings-planner-card,
+    .add-budget-section {
+        display: none;
+    }
+
+    .savings-planner-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .savings-section {
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    .savings-section__title {
+        font-size: 0.9rem;
+    }
+
+    .savings-section__subtitle {
+        margin-bottom: 10px;
+        font-size: 0.78rem;
+    }
+
+    .savings-result {
+        margin-top: 10px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+
+    .savings-actions {
+        margin-top: 8px;
+    }
+
+    #budget-cards-list {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .budget-card {
+        padding: 11px 12px;
+        border-radius: 14px;
+        border: 1px solid rgba(203, 213, 225, 0.95);
+        box-shadow: 0 7px 16px rgba(15, 23, 42, 0.1);
+    }
+
+    .budget-card__header {
+        margin-bottom: 8px;
+        align-items: flex-start;
+    }
+
+    .budget-card__icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        font-size: 0.95rem;
+    }
+
+    .budget-card__name {
+        font-size: 0.98rem;
+    }
+
+    .budget-card__amounts {
+        margin-bottom: 4px;
+        font-size: 0.82rem;
+    }
+
+    .budget-card__pct {
+        font-size: 0.74rem;
+    }
+
+    .budget-card__actions {
+        flex-direction: row;
+        width: auto;
+        align-items: center;
+    }
+
+    .budget-card__edit-btn,
+    .budget-card__remove-btn {
+        width: auto;
+        text-align: center;
+        padding: 6px 10px;
+        font-size: 0.76rem;
+        border-radius: 10px;
+    }
+
+    .budget-card__remove-btn {
+        display: none;
+    }
+
+    .budget-card__edit-btn {
+        background: #4f46e5;
+        color: #fff;
+        border: none;
+    }
+
+    .budget-edit-form.visible {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+    }
+}

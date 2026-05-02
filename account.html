@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartSpend — Account</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('smartspendTheme') || 'night';</script>
+  <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/pro-upgrade.css" />
+  <link rel="stylesheet" href="./css/account.css" />
+</head>
+<body>
+
+<header class="account-header">
+  <a class="account-back" href="home.html">← Back to Dashboard</a>
+</header>
+
+<main class="page-content">
+  <section class="account-hero">
+    <div class="account-hero__left">
+      <div class="account-avatar">👤</div>
+      <div>
+        <h1 class="account-name" id="account-name">Loading profile...</h1>
+        <p class="account-subtitle" id="account-member-status">SmartSpend Member</p>
+      </div>
+    </div>
+
+    <button class="account-edit-btn" id="edit-profile-btn">Edit Profile</button>
+    <div class="modal-overlay" id="profile-modal" aria-hidden="true">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2>Edit Profile</h2>
+          <button class="modal-close-btn" id="close-profile-modal" type="button">✕</button>
+        </div>
+
+        <form id="profile-form" class="profile-form">
+          <div class="form-group">
+            <label class="form-label" for="profile-name">Full Name</label>
+            <input class="form-input" id="profile-name" type="text" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="profile-email">Email</label>
+            <input class="form-input" id="profile-email" type="email" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="profile-phone">Phone</label>
+            <input class="form-input" id="profile-phone" type="text" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="profile-location">Location</label>
+            <input class="form-input" id="profile-location" type="text" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="profile-member-since">Member Since</label>
+            <input class="form-input" id="profile-member-since" type="text" />
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn--ghost" id="cancel-profile-btn">Cancel</button>
+            <button type="submit" class="btn btn--primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="account-grid">
+    <div class="account-card">
+      <h2 class="account-card__title">Personal Information</h2>
+
+      <div class="account-item">
+        <div class="account-item__icon">✉️</div>
+        <div class="account-item__content">
+          <div class="account-item__label">Email</div>
+          <div class="account-item__value" id="account-email">Loading...</div>
+        </div>
+      </div>
+
+      <div class="account-item">
+        <div class="account-item__icon">📞</div>
+        <div class="account-item__content">
+          <div class="account-item__label">Phone</div>
+          <div class="account-item__value" id="account-phone">Not added yet</div>
+        </div>
+      </div>
+
+      <div class="account-item">
+        <div class="account-item__icon">📍</div>
+        <div class="account-item__content">
+          <div class="account-item__label">Location</div>
+          <div class="account-item__value" id="account-location">Not added yet</div>
+        </div>
+      </div>
+
+      <div class="account-item">
+        <div class="account-item__icon">📅</div>
+        <div class="account-item__content">
+          <div class="account-item__label">Member Since</div>
+          <div class="account-item__value" id="account-member-since">Loading...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="account-card">
+      <h2 class="account-card__title">Account Settings</h2>
+
+      <div class="account-item account-item--setting account-item--setting-stack">
+        <div class="account-item__icon">🛡️</div>
+        <div class="account-item__content">
+          <div class="account-item__value">Email Verification</div>
+          <div class="account-item__label" id="verification-hint">Confirm this email before receiving alerts</div>
+        </div>
+        <div class="account-status" id="verification-status">Not verified</div>
+        <div class="account-setting__controls">
+          <button class="btn btn--ghost btn--sm" id="send-verification-btn" type="button">Send Email</button>
+        </div>
+        <div class="account-setting__verify">
+          <input class="account-setting__input" id="verification-code" type="text" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit code" />
+          <button class="btn btn--primary btn--sm" id="verify-email-btn" type="button">Verify</button>
+        </div>
+      </div>
+
+      <div class="account-item account-item--setting account-item--setting-stack">
+        <div class="account-item__icon">🔔</div>
+        <div class="account-item__content">
+          <div class="account-item__value">Email Notifications</div>
+          <div class="account-item__label">Spending alerts and updates</div>
+        </div>
+        <div class="account-status" id="email-notifications-status">On</div>
+        <div class="account-setting__controls">
+          <button class="setting-switch" id="email-notifications-toggle" type="button" aria-pressed="true">
+            <span class="setting-switch__thumb"></span>
+          </button>
+          <button class="btn btn--ghost btn--sm" id="send-test-email-btn" type="button">Send Test</button>
+        </div>
+      </div>
+
+      <div class="account-item account-item--setting account-item--setting-stack">
+        <div class="account-item__icon">💰</div>
+        <div class="account-item__content">
+          <div class="account-item__value">Budget Alerts</div>
+          <div class="account-item__label" id="budget-alert-threshold-label">Notify when total spending reaches 80% of combined budgets</div>
+        </div>
+        <div class="account-status" id="budget-alerts-status">On</div>
+        <div class="account-setting__controls">
+          <button class="setting-switch" id="budget-alerts-toggle" type="button" aria-pressed="true">
+            <span class="setting-switch__thumb"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="account-logout-wrap">
+      <button id="logout-btn" class="btn btn--danger btn--full">
+        Log Out
+      </button>
+    </div>
+  </section>
+</main>
+
+<nav class="bottom-nav">
+  <div class="sidebar-logo">SmartSpend</div>
+
+  <a class="bottom-nav__item" href="home.html">
+    <span class="bottom-nav__icon">🏠</span>
+    <span>Home</span>
+  </a>
+
+  <a class="bottom-nav__item bottom-nav__item--add" href="expense.html">
+    <span class="bottom-nav__icon">➕</span>
+    <span>Expense</span>
+  </a>
+
+  <a class="bottom-nav__item" href="analytics.html">
+    <span class="bottom-nav__icon">📊</span>
+    <span>Analytics</span>
+  </a>
+
+  <a class="bottom-nav__item" href="budget.html">
+    <span class="bottom-nav__icon">💰</span>
+    <span>Budget</span>
+  </a>
+
+  <a class="bottom-nav__item active" href="account.html">
+    <span class="bottom-nav__icon">👤</span>
+    <span>Account</span>
+  </a>
+</nav>
+
+<div id="toast-container" class="toast-container"></div>
+<script type="module" src="./js/theme.js"></script>
+<script type="module" src="./js/account.js"></script>
+<script type="module" src="./js/chatbot.js"></script>
+</body>
+</html>

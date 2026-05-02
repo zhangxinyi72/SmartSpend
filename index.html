@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartSpend | Sign In</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('smartspendTheme') || 'night';</script>
+  <link rel="stylesheet" href="./css/login.css" />
+  <link rel="stylesheet" href="./css/pro-upgrade.css" />
+</head>
+<body>
+<main class="login-page">
+  <section class="login-card">
+    <div class="auth-badge">Personal Finance Tracker</div>
+    <h1 class="brand-title">SmartSpend</h1>
+    <p class="brand-subtitle">Sign in to manage your expenses, budgets, and analytics.</p>
+
+    <form id="loginForm" class="login-form">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          placeholder="name@gmail.com"
+          autocomplete="email"
+          required
+          aria-describedby="email-format-hint"
+        />
+        <p id="email-format-hint" class="email-format-hint" role="alert" aria-live="polite" hidden></p>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="password-field">
+          <input
+            id="password"
+            type="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+          />
+          <button
+            type="button"
+            class="password-toggle"
+            data-password-toggle="password"
+            aria-pressed="false"
+          >
+            Show
+          </button>
+        </div>
+      </div>
+
+      <div class="form-meta">
+        <button
+          type="button"
+          class="forgot-password-link"
+          id="forgot-password-toggle"
+          aria-expanded="false"
+          aria-controls="forgot-password-panel"
+        >
+          Forgot password?
+        </button>
+      </div>
+
+      <section id="forgot-password-panel" class="forgot-panel" hidden>
+        <div class="forgot-panel__header">
+          <h2>Reset your password</h2>
+          <p>Enter your account email, get a 6-digit code by email, and create a new password.</p>
+        </div>
+
+        <div class="form-group">
+          <label for="reset-email">Account Email</label>
+          <div class="forgot-panel__inline">
+            <input
+              id="reset-email"
+              type="email"
+              placeholder="name@gmail.com"
+              autocomplete="email"
+            />
+            <button type="button" class="forgot-panel__send-btn" id="send-reset-code-btn">
+              Send Code
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="reset-code">Reset Code</label>
+          <input
+            id="reset-code"
+            type="text"
+            inputmode="numeric"
+            maxlength="6"
+            placeholder="Enter 6-digit code"
+            autocomplete="one-time-code"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="new-password">New Password</label>
+          <div class="password-field">
+            <input
+              id="new-password"
+              type="password"
+              placeholder="Create a new password"
+              autocomplete="new-password"
+            />
+            <button
+              type="button"
+              class="password-toggle"
+              data-password-toggle="new-password"
+              aria-pressed="false"
+            >
+              Show
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-new-password">Confirm New Password</label>
+          <div class="password-field">
+            <input
+              id="confirm-new-password"
+              type="password"
+              placeholder="Confirm your new password"
+              autocomplete="new-password"
+            />
+            <button
+              type="button"
+              class="password-toggle"
+              data-password-toggle="confirm-new-password"
+              aria-pressed="false"
+            >
+              Show
+            </button>
+          </div>
+        </div>
+
+        <p id="forgotPasswordMessage" class="forgot-panel__message"></p>
+
+        <button type="button" class="forgot-panel__reset-btn" id="reset-password-btn">
+          Update Password
+        </button>
+      </section>
+
+      <p id="errorMessage" class="error-message"></p>
+
+      <button type="submit" class="sign-in-btn" id="login-submit-btn">Sign In</button>
+    </form>
+
+    <p class="auth-switch">
+      New to SmartSpend?
+      <a href="./register.html">Create account</a>
+    </p>
+  </section>
+</main>
+
+<script type="module" src="./js/theme.js"></script>
+<script type="module" src="./js/login.js"></script>
+</body>
+</html>

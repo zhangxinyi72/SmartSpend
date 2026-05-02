@@ -1,0 +1,7 @@
+.env
+.DS_Store
+node_modules/
+.idea/
+*.iml
+modules.xml
+assets/.DS_Store

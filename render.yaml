@@ -1,0 +1,16 @@
+# 生产环境在 Render 控制台为 Web Service 配置环境变量（与本地 .env 中相同项保持一致）：
+#   MONGO_URL  =  MongoDB Atlas 连接串（与电脑端 .env 中完全一致）
+#   DB_NAME    =  companydb（与本地一致即可）
+#   APP_BASE_URL = https://smartspend-ccwe.onrender.com
+# 切勿将 Atlas 密码提交到 git。
+services:
+  - type: web
+    name: smartspend
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: DB_NAME
+        value: companydb

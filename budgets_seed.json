@@ -1,0 +1,254 @@
+[
+  {
+    "id": 1,
+    "month": "2025-11",
+    "category": "Entertainment",
+    "monthly_limit": 152.35
+  },
+  {
+    "id": 2,
+    "month": "2025-11",
+    "category": "Food",
+    "monthly_limit": 35.31
+  },
+  {
+    "id": 3,
+    "month": "2025-11",
+    "category": "Health",
+    "monthly_limit": 67.95
+  },
+  {
+    "id": 4,
+    "month": "2025-11",
+    "category": "Rent",
+    "monthly_limit": 245.36
+  },
+  {
+    "id": 5,
+    "month": "2025-11",
+    "category": "Shopping",
+    "monthly_limit": 124.16
+  },
+  {
+    "id": 6,
+    "month": "2025-11",
+    "category": "Transport",
+    "monthly_limit": 87.5
+  },
+  {
+    "id": 7,
+    "month": "2025-11",
+    "category": "Utilities",
+    "monthly_limit": 283.56
+  },
+  {
+    "id": 8,
+    "month": "2025-12",
+    "category": "Entertainment",
+    "monthly_limit": 130.5
+  },
+  {
+    "id": 9,
+    "month": "2025-12",
+    "category": "Food",
+    "monthly_limit": 85.56
+  },
+  {
+    "id": 10,
+    "month": "2025-12",
+    "category": "Health",
+    "monthly_limit": 82.64
+  },
+  {
+    "id": 11,
+    "month": "2025-12",
+    "category": "Rent",
+    "monthly_limit": 180.12
+  },
+  {
+    "id": 12,
+    "month": "2025-12",
+    "category": "Shopping",
+    "monthly_limit": 96.2
+  },
+  {
+    "id": 13,
+    "month": "2025-12",
+    "category": "Transport",
+    "monthly_limit": 66.88
+  },
+  {
+    "id": 14,
+    "month": "2025-12",
+    "category": "Utilities",
+    "monthly_limit": 45.71
+  },
+  {
+    "id": 15,
+    "month": "2026-01",
+    "category": "Entertainment",
+    "monthly_limit": 144.86
+  },
+  {
+    "id": 16,
+    "month": "2026-01",
+    "category": "Food",
+    "monthly_limit": 110.04
+  },
+  {
+    "id": 17,
+    "month": "2026-01",
+    "category": "Health",
+    "monthly_limit": 144.99
+  },
+  {
+    "id": 18,
+    "month": "2026-01",
+    "category": "Rent",
+    "monthly_limit": 87.85
+  },
+  {
+    "id": 19,
+    "month": "2026-01",
+    "category": "Shopping",
+    "monthly_limit": 160.46
+  },
+  {
+    "id": 20,
+    "month": "2026-01",
+    "category": "Transport",
+    "monthly_limit": 226.94
+  },
+  {
+    "id": 21,
+    "month": "2026-01",
+    "category": "Utilities",
+    "monthly_limit": 170.35
+  },
+  {
+    "id": 22,
+    "month": "2026-02",
+    "category": "Entertainment",
+    "monthly_limit": 168.25
+  },
+  {
+    "id": 23,
+    "month": "2026-02",
+    "category": "Food",
+    "monthly_limit": 104.53
+  },
+  {
+    "id": 24,
+    "month": "2026-02",
+    "category": "Health",
+    "monthly_limit": 117.14
+  },
+  {
+    "id": 25,
+    "month": "2026-02",
+    "category": "Rent",
+    "monthly_limit": 132.77
+  },
+  {
+    "id": 26,
+    "month": "2026-02",
+    "category": "Shopping",
+    "monthly_limit": 57.14
+  },
+  {
+    "id": 27,
+    "month": "2026-02",
+    "category": "Transport",
+    "monthly_limit": 84.62
+  },
+  {
+    "id": 28,
+    "month": "2026-02",
+    "category": "Utilities",
+    "monthly_limit": 24.57
+  },
+  {
+    "id": 29,
+    "month": "2026-03",
+    "category": "Entertainment",
+    "monthly_limit": 214.73
+  },
+  {
+    "id": 30,
+    "month": "2026-03",
+    "category": "Food",
+    "monthly_limit": 66.59
+  },
+  {
+    "id": 31,
+    "month": "2026-03",
+    "category": "Health",
+    "monthly_limit": 139.79
+  },
+  {
+    "id": 32,
+    "month": "2026-03",
+    "category": "Rent",
+    "monthly_limit": 54.59
+  },
+  {
+    "id": 33,
+    "month": "2026-03",
+    "category": "Shopping",
+    "monthly_limit": 136.74
+  },
+  {
+    "id": 34,
+    "month": "2026-03",
+    "category": "Transport",
+    "monthly_limit": 125.85
+  },
+  {
+    "id": 35,
+    "month": "2026-03",
+    "category": "Utilities",
+    "monthly_limit": 152.7
+  },
+  {
+    "id": 36,
+    "month": "2026-04",
+    "category": "Entertainment",
+    "monthly_limit": 164.72
+  },
+  {
+    "id": 37,
+    "month": "2026-04",
+    "category": "Food",
+    "monthly_limit": 103.9
+  },
+  {
+    "id": 38,
+    "month": "2026-04",
+    "category": "Health",
+    "monthly_limit": 75.57
+  },
+  {
+    "id": 39,
+    "month": "2026-04",
+    "category": "Rent",
+    "monthly_limit": 59.05
+  },
+  {
+    "id": 40,
+    "month": "2026-04",
+    "category": "Shopping",
+    "monthly_limit": 9.26
+  },
+  {
+    "id": 41,
+    "month": "2026-04",
+    "category": "Transport",
+    "monthly_limit": 210.02
+  },
+  {
+    "id": 42,
+    "month": "2026-04",
+    "category": "Utilities",
+    "monthly_limit": 85.99
+  }
+]

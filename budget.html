@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartSpend — Budget</title>
+    <script>document.documentElement.dataset.theme = localStorage.getItem('smartspendTheme') || 'night';</script>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/pro-upgrade.css" />
+    <link rel="stylesheet" href="css/budget.css" />
+</head>
+<body>
+
+<header class="budget-header">
+    <h1 class="budget-header__title">Budget Management</h1>
+    <p class="budget-header__subtitle" id="budget-month-label">Loading…</p>
+</header>
+
+<main class="page-content">
+
+    <div class="budget-mobile-summary">
+        <div class="budget-mobile-summary__card budget-mobile-summary__card--budget">
+            <div class="budget-mobile-summary__label">Budget</div>
+            <div class="budget-mobile-summary__value" id="mobile-health-budget">—</div>
+            <div class="budget-mobile-summary__meta">Planned</div>
+        </div>
+        <div class="budget-mobile-summary__card budget-mobile-summary__card--spent">
+            <div class="budget-mobile-summary__label">Spent</div>
+            <div class="budget-mobile-summary__value" id="mobile-health-spent">—</div>
+            <div class="budget-mobile-summary__meta" id="mobile-health-used-pct">0%</div>
+        </div>
+        <div class="budget-mobile-summary__card budget-mobile-summary__card--left">
+            <div class="budget-mobile-summary__label">Left</div>
+            <div class="budget-mobile-summary__value" id="mobile-health-remaining">—</div>
+            <div class="budget-mobile-summary__meta">Left</div>
+        </div>
+    </div>
+
+    <!-- Health Summary Card -->
+    <div class="budget-health-card">
+        <div class="budget-section-heading">Overall Progress</div>
+        <div class="budget-health-row">
+            <span class="budget-health-label">Total Budgeted</span>
+            <span class="budget-health-value" id="health-budget">—</span>
+        </div>
+        <div class="budget-health-row">
+            <span class="budget-health-label">Spent this month</span>
+            <span class="budget-health-value" id="health-spent">—</span>
+        </div>
+        <div class="progress-bar-wrap" style="margin: 8px 0">
+            <div class="progress-bar-fill" id="health-bar" style="width:0%"></div>
+        </div>
+        <div class="budget-health-row" style="margin-bottom:0">
+            <span class="budget-health-label">Remaining</span>
+            <span class="budget-health-value" id="health-remaining">—</span>
+        </div>
+    </div>
+
+    <!-- Savings Planner -->
+    <div class="savings-planner-card">
+        <div class="card-header">
+            <span class="card-title">Savings Planner</span>
+        </div>
+
+        <div class="savings-planner-grid">
+            <div class="savings-section">
+                <h3 class="savings-section__title">Combined Saving Plan</h3>
+                <p class="savings-section__subtitle">Choose monthly target or total goal period in one planner.</p>
+
+                <div class="form-group">
+                    <label class="form-label" for="saving-plan-type">Plan Type</label>
+                    <select class="form-input" id="saving-plan-type">
+                        <option value="monthly">Monthly Saving Goal</option>
+                        <option value="goal">Goal-based Saving Plan</option>
+                    </select>
+                </div>
+
+                <div class="savings-plan-group" id="monthly-plan-group">
+                    <div class="form-group">
+                        <label class="form-label" for="monthly-saving-goal">Monthly Saving Target</label>
+                        <input
+                                class="form-input"
+                                id="monthly-saving-goal"
+                                type="number"
+                                min="1"
+                                placeholder="e.g. 150"
+                        />
+                    </div>
+                </div>
+
+                <div class="savings-plan-group" id="goal-plan-group" hidden>
+                    <div class="form-group">
+                        <label class="form-label" for="goal-saving-amount">Total Saving Goal</label>
+                        <input
+                                class="form-input"
+                                id="goal-saving-amount"
+                                type="number"
+                                min="1"
+                                placeholder="e.g. 600"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="goal-saving-months">Target Period</label>
+                        <select class="form-input" id="goal-saving-months">
+                            <option value="2">2 Months</option>
+                            <option value="3">3 Months</option>
+                            <option value="6">6 Months</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn btn--primary btn--full" id="saving-plan-calc-btn" type="button">
+                    Calculate Plan
+                </button>
+
+                <div class="savings-result" id="saving-plan-result">
+                    Set a target to see a suggested plan based on last month's spending.
+                </div>
+
+                <div class="savings-actions">
+                    <button class="btn btn--ghost btn--full" id="saving-plan-apply-btn" type="button" disabled>
+                        Apply Suggested Budgets
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Per-category budget cards -->
+    <div class="budget-section-heading budget-section-heading--cards">Category Budgets</div>
+    <div id="budget-cards-list"></div>
+
+    <!-- Add Budget -->
+    <div class="add-budget-section">
+        <button class="add-budget-btn" id="toggle-add-budget-btn" type="button">➕ Add Budget Category</button>
+        <div class="add-budget-form" id="add-budget-form">
+            <select id="add-budget-category">
+                <option value="">Select category…</option>
+            </select>
+            <div class="add-budget-form__row">
+                <input
+                        class="form-input"
+                        id="add-budget-limit"
+                        type="number"
+                        min="1"
+                        placeholder="Monthly limit ($)"
+                        style="flex:1"
+                />
+                <button class="btn btn--primary" id="add-budget-save-btn" type="button">Save</button>
+            </div>
+            <div class="add-budget-note" id="add-budget-note"></div>
+        </div>
+    </div>
+
+</main>
+
+<!-- Bottom Nav / Sidebar -->
+<nav class="bottom-nav">
+    <div class="sidebar-logo">SmartSpend</div>
+    <a class="bottom-nav__item" href="home.html">
+        <span class="bottom-nav__icon">🏠</span>
+        <span>Home</span>
+    </a>
+    <a class="bottom-nav__item bottom-nav__item--add" href="expense.html">
+        <span class="bottom-nav__icon">➕</span>
+        <span>Expense</span>
+    </a>
+    <a class="bottom-nav__item" href="analytics.html">
+        <span class="bottom-nav__icon">📊</span>
+        <span>Analytics</span>
+    </a>
+    <a class="bottom-nav__item active" href="budget.html">
+        <span class="bottom-nav__icon">💰</span>
+        <span>Budget</span>
+    </a>
+    <a class="bottom-nav__item" href="account.html">
+        <span class="bottom-nav__icon">👤</span>
+        <span>Account</span>
+    </a>
+</nav>
+
+<div id="toast-container" class="toast-container"></div>
+<script type="module" src="./js/theme.js"></script>
+<script type="module" src="js/budget.js"></script>
+<script type="module" src="./js/chatbot.js"></script>
+</body>
+</html>

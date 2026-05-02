@@ -1,0 +1,1712 @@
+[
+  {
+    "id": 1,
+    "date": "2025-11-02",
+    "category": "Health",
+    "amount": 13.49,
+    "payment_mode": "Cash",
+    "month": "2025-11",
+    "source_month": "March"
+  },
+  {
+    "id": 2,
+    "date": "2025-11-02",
+    "category": "Rent",
+    "amount": 42.22,
+    "payment_mode": "Cash",
+    "month": "2025-11",
+    "source_month": "December"
+  },
+  {
+    "id": 3,
+    "date": "2025-11-02",
+    "category": "Transport",
+    "amount": 26.86,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "June"
+  },
+  {
+    "id": 4,
+    "date": "2025-11-03",
+    "category": "Rent",
+    "amount": 24.4,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "January"
+  },
+  {
+    "id": 5,
+    "date": "2025-11-05",
+    "category": "Rent",
+    "amount": 22.32,
+    "payment_mode": "Cash",
+    "month": "2025-11",
+    "source_month": "January"
+  },
+  {
+    "id": 6,
+    "date": "2025-11-05",
+    "category": "Utilities",
+    "amount": 42.73,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "June"
+  },
+  {
+    "id": 7,
+    "date": "2025-11-06",
+    "category": "Entertainment",
+    "amount": 5.5,
+    "payment_mode": "Cash",
+    "month": "2025-11",
+    "source_month": "July"
+  },
+  {
+    "id": 8,
+    "date": "2025-11-06",
+    "category": "Rent",
+    "amount": 15.55,
+    "payment_mode": "Cash",
+    "month": "2025-11",
+    "source_month": "May"
+  },
+  {
+    "id": 9,
+    "date": "2025-11-06",
+    "category": "Transport",
+    "amount": 23.94,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "February"
+  },
+  {
+    "id": 10,
+    "date": "2025-11-07",
+    "category": "Utilities",
+    "amount": 37.49,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "April"
+  },
+  {
+    "id": 11,
+    "date": "2025-11-11",
+    "category": "Food",
+    "amount": 2.33,
+    "payment_mode": "Cash",
+    "month": "2025-11",
+    "source_month": "April"
+  },
+  {
+    "id": 12,
+    "date": "2025-11-12",
+    "category": "Entertainment",
+    "amount": 37.28,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "July"
+  },
+  {
+    "id": 13,
+    "date": "2025-11-12",
+    "category": "Health",
+    "amount": 26.92,
+    "payment_mode": "Cash",
+    "month": "2025-11",
+    "source_month": "March"
+  },
+  {
+    "id": 14,
+    "date": "2025-11-12",
+    "category": "Rent",
+    "amount": 23.32,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "March"
+  },
+  {
+    "id": 15,
+    "date": "2025-11-12",
+    "category": "Rent",
+    "amount": 29.8,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "September"
+  },
+  {
+    "id": 16,
+    "date": "2025-11-14",
+    "category": "Entertainment",
+    "amount": 3.87,
+    "payment_mode": "Card",
+    "month": "2025-11",
+    "source_month": "March"
+  },
+  {
+    "id": 17,
+    "date": "2025-11-14",
+    "category": "Shopping",
+    "amount": 41.05,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "June"
+  },
+  {
+    "id": 18,
+    "date": "2025-11-14",
+    "category": "Transport",
+    "amount": 36.7,
+    "payment_mode": "Card",
+    "month": "2025-11",
+    "source_month": "October"
+  },
+  {
+    "id": 19,
+    "date": "2025-11-15",
+    "category": "Health",
+    "amount": 16.96,
+    "payment_mode": "Card",
+    "month": "2025-11",
+    "source_month": "May"
+  },
+  {
+    "id": 20,
+    "date": "2025-11-15",
+    "category": "Rent",
+    "amount": 31.19,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "March"
+  },
+  {
+    "id": 21,
+    "date": "2025-11-16",
+    "category": "Utilities",
+    "amount": 38.99,
+    "payment_mode": "Cash",
+    "month": "2025-11",
+    "source_month": "September"
+  },
+  {
+    "id": 22,
+    "date": "2025-11-17",
+    "category": "Rent",
+    "amount": 7.19,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "March"
+  },
+  {
+    "id": 23,
+    "date": "2025-11-18",
+    "category": "Entertainment",
+    "amount": 41.98,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "October"
+  },
+  {
+    "id": 24,
+    "date": "2025-11-19",
+    "category": "Utilities",
+    "amount": 51.42,
+    "payment_mode": "Cash",
+    "month": "2025-11",
+    "source_month": "July"
+  },
+  {
+    "id": 25,
+    "date": "2025-11-20",
+    "category": "Shopping",
+    "amount": 38.21,
+    "payment_mode": "Cash",
+    "month": "2025-11",
+    "source_month": "June"
+  },
+  {
+    "id": 26,
+    "date": "2025-11-21",
+    "category": "Entertainment",
+    "amount": 8.86,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "July"
+  },
+  {
+    "id": 27,
+    "date": "2025-11-21",
+    "category": "Rent",
+    "amount": 2.87,
+    "payment_mode": "Card",
+    "month": "2025-11",
+    "source_month": "June"
+  },
+  {
+    "id": 28,
+    "date": "2025-11-22",
+    "category": "Rent",
+    "amount": 12.41,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "September"
+  },
+  {
+    "id": 29,
+    "date": "2025-11-22",
+    "category": "Shopping",
+    "amount": 41.95,
+    "payment_mode": "Card",
+    "month": "2025-11",
+    "source_month": "July"
+  },
+  {
+    "id": 30,
+    "date": "2025-11-23",
+    "category": "Utilities",
+    "amount": 35.66,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "April"
+  },
+  {
+    "id": 31,
+    "date": "2025-11-25",
+    "category": "Health",
+    "amount": 10.58,
+    "payment_mode": "Cash",
+    "month": "2025-11",
+    "source_month": "May"
+  },
+  {
+    "id": 32,
+    "date": "2025-11-27",
+    "category": "Entertainment",
+    "amount": 11.96,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "November"
+  },
+  {
+    "id": 33,
+    "date": "2025-11-28",
+    "category": "Rent",
+    "amount": 34.09,
+    "payment_mode": "Cash",
+    "month": "2025-11",
+    "source_month": "May"
+  },
+  {
+    "id": 34,
+    "date": "2025-11-28",
+    "category": "Utilities",
+    "amount": 26.78,
+    "payment_mode": "Cash",
+    "month": "2025-11",
+    "source_month": "January"
+  },
+  {
+    "id": 35,
+    "date": "2025-11-29",
+    "category": "Entertainment",
+    "amount": 13.21,
+    "payment_mode": "Card",
+    "month": "2025-11",
+    "source_month": "November"
+  },
+  {
+    "id": 36,
+    "date": "2025-11-29",
+    "category": "Entertainment",
+    "amount": 29.69,
+    "payment_mode": "Cash",
+    "month": "2025-11",
+    "source_month": "February"
+  },
+  {
+    "id": 37,
+    "date": "2025-11-29",
+    "category": "Food",
+    "amount": 32.98,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "May"
+  },
+  {
+    "id": 38,
+    "date": "2025-11-30",
+    "category": "Shopping",
+    "amount": 2.95,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "February"
+  },
+  {
+    "id": 39,
+    "date": "2025-11-30",
+    "category": "Utilities",
+    "amount": 50.49,
+    "payment_mode": "Online",
+    "month": "2025-11",
+    "source_month": "August"
+  },
+  {
+    "id": 40,
+    "date": "2025-12-01",
+    "category": "Transport",
+    "amount": 6.89,
+    "payment_mode": "Card",
+    "month": "2025-12",
+    "source_month": "August"
+  },
+  {
+    "id": 41,
+    "date": "2025-12-02",
+    "category": "Shopping",
+    "amount": 52.35,
+    "payment_mode": "Online",
+    "month": "2025-12",
+    "source_month": "February"
+  },
+  {
+    "id": 42,
+    "date": "2025-12-03",
+    "category": "Entertainment",
+    "amount": 14.54,
+    "payment_mode": "Cash",
+    "month": "2025-12",
+    "source_month": "March"
+  },
+  {
+    "id": 43,
+    "date": "2025-12-04",
+    "category": "Food",
+    "amount": 8.53,
+    "payment_mode": "Card",
+    "month": "2025-12",
+    "source_month": "December"
+  },
+  {
+    "id": 44,
+    "date": "2025-12-04",
+    "category": "Food",
+    "amount": 26.88,
+    "payment_mode": "Card",
+    "month": "2025-12",
+    "source_month": "February"
+  },
+  {
+    "id": 45,
+    "date": "2025-12-06",
+    "category": "Entertainment",
+    "amount": 7.7,
+    "payment_mode": "Card",
+    "month": "2025-12",
+    "source_month": "December"
+  },
+  {
+    "id": 46,
+    "date": "2025-12-09",
+    "category": "Transport",
+    "amount": 12.41,
+    "payment_mode": "Online",
+    "month": "2025-12",
+    "source_month": "March"
+  },
+  {
+    "id": 47,
+    "date": "2025-12-10",
+    "category": "Entertainment",
+    "amount": 23.71,
+    "payment_mode": "Cash",
+    "month": "2025-12",
+    "source_month": "July"
+  },
+  {
+    "id": 48,
+    "date": "2025-12-10",
+    "category": "Food",
+    "amount": 12.43,
+    "payment_mode": "Card",
+    "month": "2025-12",
+    "source_month": "November"
+  },
+  {
+    "id": 49,
+    "date": "2025-12-11",
+    "category": "Transport",
+    "amount": 39.5,
+    "payment_mode": "Cash",
+    "month": "2025-12",
+    "source_month": "January"
+  },
+  {
+    "id": 50,
+    "date": "2025-12-14",
+    "category": "Health",
+    "amount": 11.88,
+    "payment_mode": "Cash",
+    "month": "2025-12",
+    "source_month": "August"
+  },
+  {
+    "id": 51,
+    "date": "2025-12-18",
+    "category": "Rent",
+    "amount": 36.18,
+    "payment_mode": "Card",
+    "month": "2025-12",
+    "source_month": "February"
+  },
+  {
+    "id": 52,
+    "date": "2025-12-20",
+    "category": "Food",
+    "amount": 37.72,
+    "payment_mode": "Card",
+    "month": "2025-12",
+    "source_month": "August"
+  },
+  {
+    "id": 53,
+    "date": "2025-12-20",
+    "category": "Transport",
+    "amount": 8.08,
+    "payment_mode": "Online",
+    "month": "2025-12",
+    "source_month": "May"
+  },
+  {
+    "id": 54,
+    "date": "2025-12-24",
+    "category": "Entertainment",
+    "amount": 34.01,
+    "payment_mode": "Online",
+    "month": "2025-12",
+    "source_month": "October"
+  },
+  {
+    "id": 55,
+    "date": "2025-12-25",
+    "category": "Utilities",
+    "amount": 8.91,
+    "payment_mode": "Online",
+    "month": "2025-12",
+    "source_month": "December"
+  },
+  {
+    "id": 56,
+    "date": "2025-12-26",
+    "category": "Health",
+    "amount": 49.77,
+    "payment_mode": "Cash",
+    "month": "2025-12",
+    "source_month": "October"
+  },
+  {
+    "id": 57,
+    "date": "2025-12-27",
+    "category": "Rent",
+    "amount": 13.05,
+    "payment_mode": "Online",
+    "month": "2025-12",
+    "source_month": "December"
+  },
+  {
+    "id": 58,
+    "date": "2025-12-27",
+    "category": "Rent",
+    "amount": 40.11,
+    "payment_mode": "Online",
+    "month": "2025-12",
+    "source_month": "October"
+  },
+  {
+    "id": 59,
+    "date": "2025-12-27",
+    "category": "Rent",
+    "amount": 40.73,
+    "payment_mode": "Card",
+    "month": "2025-12",
+    "source_month": "August"
+  },
+  {
+    "id": 60,
+    "date": "2025-12-28",
+    "category": "Utilities",
+    "amount": 36.8,
+    "payment_mode": "Card",
+    "month": "2025-12",
+    "source_month": "May"
+  },
+  {
+    "id": 61,
+    "date": "2025-12-29",
+    "category": "Entertainment",
+    "amount": 50.54,
+    "payment_mode": "Card",
+    "month": "2025-12",
+    "source_month": "August"
+  },
+  {
+    "id": 62,
+    "date": "2025-12-29",
+    "category": "Shopping",
+    "amount": 43.85,
+    "payment_mode": "Online",
+    "month": "2025-12",
+    "source_month": "May"
+  },
+  {
+    "id": 63,
+    "date": "2025-12-30",
+    "category": "Health",
+    "amount": 20.99,
+    "payment_mode": "Online",
+    "month": "2025-12",
+    "source_month": "June"
+  },
+  {
+    "id": 64,
+    "date": "2025-12-30",
+    "category": "Rent",
+    "amount": 50.05,
+    "payment_mode": "Cash",
+    "month": "2025-12",
+    "source_month": "December"
+  },
+  {
+    "id": 65,
+    "date": "2026-01-01",
+    "category": "Shopping",
+    "amount": 40.55,
+    "payment_mode": "Cash",
+    "month": "2026-01",
+    "source_month": "April"
+  },
+  {
+    "id": 66,
+    "date": "2026-01-01",
+    "category": "Utilities",
+    "amount": 38.19,
+    "payment_mode": "Card",
+    "month": "2026-01",
+    "source_month": "September"
+  },
+  {
+    "id": 67,
+    "date": "2026-01-02",
+    "category": "Shopping",
+    "amount": 43.96,
+    "payment_mode": "Card",
+    "month": "2026-01",
+    "source_month": "November"
+  },
+  {
+    "id": 68,
+    "date": "2026-01-03",
+    "category": "Transport",
+    "amount": 45.97,
+    "payment_mode": "Card",
+    "month": "2026-01",
+    "source_month": "May"
+  },
+  {
+    "id": 69,
+    "date": "2026-01-03",
+    "category": "Utilities",
+    "amount": 24.69,
+    "payment_mode": "Online",
+    "month": "2026-01",
+    "source_month": "April"
+  },
+  {
+    "id": 70,
+    "date": "2026-01-04",
+    "category": "Health",
+    "amount": 17.15,
+    "payment_mode": "Card",
+    "month": "2026-01",
+    "source_month": "January"
+  },
+  {
+    "id": 71,
+    "date": "2026-01-04",
+    "category": "Shopping",
+    "amount": 41.0,
+    "payment_mode": "Online",
+    "month": "2026-01",
+    "source_month": "March"
+  },
+  {
+    "id": 72,
+    "date": "2026-01-05",
+    "category": "Entertainment",
+    "amount": 18.89,
+    "payment_mode": "Online",
+    "month": "2026-01",
+    "source_month": "September"
+  },
+  {
+    "id": 73,
+    "date": "2026-01-05",
+    "category": "Entertainment",
+    "amount": 19.61,
+    "payment_mode": "Card",
+    "month": "2026-01",
+    "source_month": "August"
+  },
+  {
+    "id": 74,
+    "date": "2026-01-05",
+    "category": "Utilities",
+    "amount": 33.28,
+    "payment_mode": "Online",
+    "month": "2026-01",
+    "source_month": "September"
+  },
+  {
+    "id": 75,
+    "date": "2026-01-08",
+    "category": "Food",
+    "amount": 48.73,
+    "payment_mode": "Cash",
+    "month": "2026-01",
+    "source_month": "July"
+  },
+  {
+    "id": 76,
+    "date": "2026-01-08",
+    "category": "Transport",
+    "amount": 51.92,
+    "payment_mode": "Card",
+    "month": "2026-01",
+    "source_month": "November"
+  },
+  {
+    "id": 77,
+    "date": "2026-01-09",
+    "category": "Utilities",
+    "amount": 44.45,
+    "payment_mode": "Cash",
+    "month": "2026-01",
+    "source_month": "August"
+  },
+  {
+    "id": 78,
+    "date": "2026-01-10",
+    "category": "Rent",
+    "amount": 2.57,
+    "payment_mode": "Online",
+    "month": "2026-01",
+    "source_month": "April"
+  },
+  {
+    "id": 79,
+    "date": "2026-01-12",
+    "category": "Health",
+    "amount": 18.51,
+    "payment_mode": "Online",
+    "month": "2026-01",
+    "source_month": "October"
+  },
+  {
+    "id": 80,
+    "date": "2026-01-14",
+    "category": "Entertainment",
+    "amount": 45.83,
+    "payment_mode": "Cash",
+    "month": "2026-01",
+    "source_month": "August"
+  },
+  {
+    "id": 81,
+    "date": "2026-01-14",
+    "category": "Transport",
+    "amount": 31.45,
+    "payment_mode": "Online",
+    "month": "2026-01",
+    "source_month": "May"
+  },
+  {
+    "id": 82,
+    "date": "2026-01-17",
+    "category": "Entertainment",
+    "amount": 39.61,
+    "payment_mode": "Card",
+    "month": "2026-01",
+    "source_month": "December"
+  },
+  {
+    "id": 83,
+    "date": "2026-01-18",
+    "category": "Food",
+    "amount": 10.16,
+    "payment_mode": "Cash",
+    "month": "2026-01",
+    "source_month": "July"
+  },
+  {
+    "id": 84,
+    "date": "2026-01-18",
+    "category": "Rent",
+    "amount": 52.24,
+    "payment_mode": "Cash",
+    "month": "2026-01",
+    "source_month": "November"
+  },
+  {
+    "id": 85,
+    "date": "2026-01-19",
+    "category": "Entertainment",
+    "amount": 20.92,
+    "payment_mode": "Cash",
+    "month": "2026-01",
+    "source_month": "December"
+  },
+  {
+    "id": 86,
+    "date": "2026-01-19",
+    "category": "Utilities",
+    "amount": 17.87,
+    "payment_mode": "Online",
+    "month": "2026-01",
+    "source_month": "August"
+  },
+  {
+    "id": 87,
+    "date": "2026-01-20",
+    "category": "Health",
+    "amount": 22.72,
+    "payment_mode": "Card",
+    "month": "2026-01",
+    "source_month": "January"
+  },
+  {
+    "id": 88,
+    "date": "2026-01-20",
+    "category": "Transport",
+    "amount": 41.81,
+    "payment_mode": "Cash",
+    "month": "2026-01",
+    "source_month": "May"
+  },
+  {
+    "id": 89,
+    "date": "2026-01-21",
+    "category": "Shopping",
+    "amount": 34.95,
+    "payment_mode": "Cash",
+    "month": "2026-01",
+    "source_month": "January"
+  },
+  {
+    "id": 90,
+    "date": "2026-01-21",
+    "category": "Utilities",
+    "amount": 11.87,
+    "payment_mode": "Online",
+    "month": "2026-01",
+    "source_month": "March"
+  },
+  {
+    "id": 91,
+    "date": "2026-01-23",
+    "category": "Food",
+    "amount": 26.17,
+    "payment_mode": "Card",
+    "month": "2026-01",
+    "source_month": "April"
+  },
+  {
+    "id": 92,
+    "date": "2026-01-23",
+    "category": "Transport",
+    "amount": 35.46,
+    "payment_mode": "Online",
+    "month": "2026-01",
+    "source_month": "October"
+  },
+  {
+    "id": 93,
+    "date": "2026-01-27",
+    "category": "Health",
+    "amount": 44.55,
+    "payment_mode": "Online",
+    "month": "2026-01",
+    "source_month": "January"
+  },
+  {
+    "id": 94,
+    "date": "2026-01-28",
+    "category": "Food",
+    "amount": 24.98,
+    "payment_mode": "Cash",
+    "month": "2026-01",
+    "source_month": "February"
+  },
+  {
+    "id": 95,
+    "date": "2026-01-28",
+    "category": "Rent",
+    "amount": 16.21,
+    "payment_mode": "Card",
+    "month": "2026-01",
+    "source_month": "August"
+  },
+  {
+    "id": 96,
+    "date": "2026-01-30",
+    "category": "Transport",
+    "amount": 20.33,
+    "payment_mode": "Online",
+    "month": "2026-01",
+    "source_month": "February"
+  },
+  {
+    "id": 97,
+    "date": "2026-01-31",
+    "category": "Health",
+    "amount": 42.06,
+    "payment_mode": "Cash",
+    "month": "2026-01",
+    "source_month": "September"
+  },
+  {
+    "id": 98,
+    "date": "2026-01-31",
+    "category": "Rent",
+    "amount": 16.83,
+    "payment_mode": "Online",
+    "month": "2026-01",
+    "source_month": "November"
+  },
+  {
+    "id": 99,
+    "date": "2026-02-02",
+    "category": "Entertainment",
+    "amount": 13.79,
+    "payment_mode": "Card",
+    "month": "2026-02",
+    "source_month": "January"
+  },
+  {
+    "id": 100,
+    "date": "2026-02-02",
+    "category": "Health",
+    "amount": 25.71,
+    "payment_mode": "Card",
+    "month": "2026-02",
+    "source_month": "April"
+  },
+  {
+    "id": 101,
+    "date": "2026-02-02",
+    "category": "Health",
+    "amount": 36.74,
+    "payment_mode": "Online",
+    "month": "2026-02",
+    "source_month": "March"
+  },
+  {
+    "id": 102,
+    "date": "2026-02-02",
+    "category": "Utilities",
+    "amount": 24.57,
+    "payment_mode": "Cash",
+    "month": "2026-02",
+    "source_month": "July"
+  },
+  {
+    "id": 103,
+    "date": "2026-02-05",
+    "category": "Entertainment",
+    "amount": 19.8,
+    "payment_mode": "Card",
+    "month": "2026-02",
+    "source_month": "January"
+  },
+  {
+    "id": 104,
+    "date": "2026-02-05",
+    "category": "Transport",
+    "amount": 45.49,
+    "payment_mode": "Card",
+    "month": "2026-02",
+    "source_month": "October"
+  },
+  {
+    "id": 105,
+    "date": "2026-02-07",
+    "category": "Entertainment",
+    "amount": 13.64,
+    "payment_mode": "Online",
+    "month": "2026-02",
+    "source_month": "February"
+  },
+  {
+    "id": 106,
+    "date": "2026-02-07",
+    "category": "Health",
+    "amount": 16.58,
+    "payment_mode": "Cash",
+    "month": "2026-02",
+    "source_month": "September"
+  },
+  {
+    "id": 107,
+    "date": "2026-02-08",
+    "category": "Rent",
+    "amount": 47.0,
+    "payment_mode": "Cash",
+    "month": "2026-02",
+    "source_month": "February"
+  },
+  {
+    "id": 108,
+    "date": "2026-02-09",
+    "category": "Health",
+    "amount": 21.06,
+    "payment_mode": "Cash",
+    "month": "2026-02",
+    "source_month": "March"
+  },
+  {
+    "id": 109,
+    "date": "2026-02-10",
+    "category": "Transport",
+    "amount": 15.12,
+    "payment_mode": "Cash",
+    "month": "2026-02",
+    "source_month": "December"
+  },
+  {
+    "id": 110,
+    "date": "2026-02-11",
+    "category": "Transport",
+    "amount": 10.39,
+    "payment_mode": "Online",
+    "month": "2026-02",
+    "source_month": "August"
+  },
+  {
+    "id": 111,
+    "date": "2026-02-12",
+    "category": "Rent",
+    "amount": 22.77,
+    "payment_mode": "Card",
+    "month": "2026-02",
+    "source_month": "January"
+  },
+  {
+    "id": 112,
+    "date": "2026-02-14",
+    "category": "Entertainment",
+    "amount": 18.27,
+    "payment_mode": "Cash",
+    "month": "2026-02",
+    "source_month": "December"
+  },
+  {
+    "id": 113,
+    "date": "2026-02-14",
+    "category": "Entertainment",
+    "amount": 50.85,
+    "payment_mode": "Online",
+    "month": "2026-02",
+    "source_month": "June"
+  },
+  {
+    "id": 114,
+    "date": "2026-02-14",
+    "category": "Food",
+    "amount": 3.93,
+    "payment_mode": "Cash",
+    "month": "2026-02",
+    "source_month": "September"
+  },
+  {
+    "id": 115,
+    "date": "2026-02-14",
+    "category": "Rent",
+    "amount": 42.45,
+    "payment_mode": "Online",
+    "month": "2026-02",
+    "source_month": "September"
+  },
+  {
+    "id": 116,
+    "date": "2026-02-15",
+    "category": "Health",
+    "amount": 17.05,
+    "payment_mode": "Card",
+    "month": "2026-02",
+    "source_month": "January"
+  },
+  {
+    "id": 117,
+    "date": "2026-02-17",
+    "category": "Entertainment",
+    "amount": 30.2,
+    "payment_mode": "Online",
+    "month": "2026-02",
+    "source_month": "November"
+  },
+  {
+    "id": 118,
+    "date": "2026-02-18",
+    "category": "Shopping",
+    "amount": 13.72,
+    "payment_mode": "Card",
+    "month": "2026-02",
+    "source_month": "November"
+  },
+  {
+    "id": 119,
+    "date": "2026-02-18",
+    "category": "Shopping",
+    "amount": 43.42,
+    "payment_mode": "Card",
+    "month": "2026-02",
+    "source_month": "October"
+  },
+  {
+    "id": 120,
+    "date": "2026-02-21",
+    "category": "Food",
+    "amount": 49.76,
+    "payment_mode": "Card",
+    "month": "2026-02",
+    "source_month": "November"
+  },
+  {
+    "id": 121,
+    "date": "2026-02-21",
+    "category": "Rent",
+    "amount": 11.36,
+    "payment_mode": "Cash",
+    "month": "2026-02",
+    "source_month": "January"
+  },
+  {
+    "id": 122,
+    "date": "2026-02-22",
+    "category": "Rent",
+    "amount": 9.19,
+    "payment_mode": "Online",
+    "month": "2026-02",
+    "source_month": "January"
+  },
+  {
+    "id": 123,
+    "date": "2026-02-23",
+    "category": "Transport",
+    "amount": 13.62,
+    "payment_mode": "Cash",
+    "month": "2026-02",
+    "source_month": "September"
+  },
+  {
+    "id": 124,
+    "date": "2026-02-25",
+    "category": "Entertainment",
+    "amount": 20.9,
+    "payment_mode": "Card",
+    "month": "2026-02",
+    "source_month": "April"
+  },
+  {
+    "id": 125,
+    "date": "2026-02-25",
+    "category": "Food",
+    "amount": 50.84,
+    "payment_mode": "Cash",
+    "month": "2026-02",
+    "source_month": "September"
+  },
+  {
+    "id": 126,
+    "date": "2026-02-28",
+    "category": "Entertainment",
+    "amount": 0.8,
+    "payment_mode": "Online",
+    "month": "2026-02",
+    "source_month": "October"
+  },
+  {
+    "id": 127,
+    "date": "2026-03-01",
+    "category": "Shopping",
+    "amount": 14.48,
+    "payment_mode": "Cash",
+    "month": "2026-03",
+    "source_month": "May"
+  },
+  {
+    "id": 128,
+    "date": "2026-03-02",
+    "category": "Entertainment",
+    "amount": 3.88,
+    "payment_mode": "Card",
+    "month": "2026-03",
+    "source_month": "September"
+  },
+  {
+    "id": 129,
+    "date": "2026-03-02",
+    "category": "Rent",
+    "amount": 38.12,
+    "payment_mode": "Online",
+    "month": "2026-03",
+    "source_month": "March"
+  },
+  {
+    "id": 130,
+    "date": "2026-03-02",
+    "category": "Utilities",
+    "amount": 50.99,
+    "payment_mode": "Cash",
+    "month": "2026-03",
+    "source_month": "January"
+  },
+  {
+    "id": 131,
+    "date": "2026-03-03",
+    "category": "Shopping",
+    "amount": 6.47,
+    "payment_mode": "Card",
+    "month": "2026-03",
+    "source_month": "October"
+  },
+  {
+    "id": 132,
+    "date": "2026-03-05",
+    "category": "Shopping",
+    "amount": 18.94,
+    "payment_mode": "Online",
+    "month": "2026-03",
+    "source_month": "October"
+  },
+  {
+    "id": 133,
+    "date": "2026-03-05",
+    "category": "Transport",
+    "amount": 42.21,
+    "payment_mode": "Cash",
+    "month": "2026-03",
+    "source_month": "May"
+  },
+  {
+    "id": 134,
+    "date": "2026-03-06",
+    "category": "Entertainment",
+    "amount": 43.0,
+    "payment_mode": "Cash",
+    "month": "2026-03",
+    "source_month": "September"
+  },
+  {
+    "id": 135,
+    "date": "2026-03-06",
+    "category": "Food",
+    "amount": 16.18,
+    "payment_mode": "Online",
+    "month": "2026-03",
+    "source_month": "November"
+  },
+  {
+    "id": 136,
+    "date": "2026-03-06",
+    "category": "Transport",
+    "amount": 23.05,
+    "payment_mode": "Cash",
+    "month": "2026-03",
+    "source_month": "March"
+  },
+  {
+    "id": 137,
+    "date": "2026-03-08",
+    "category": "Food",
+    "amount": 38.57,
+    "payment_mode": "Card",
+    "month": "2026-03",
+    "source_month": "July"
+  },
+  {
+    "id": 138,
+    "date": "2026-03-08",
+    "category": "Health",
+    "amount": 24.69,
+    "payment_mode": "Online",
+    "month": "2026-03",
+    "source_month": "January"
+  },
+  {
+    "id": 139,
+    "date": "2026-03-08",
+    "category": "Health",
+    "amount": 37.36,
+    "payment_mode": "Card",
+    "month": "2026-03",
+    "source_month": "November"
+  },
+  {
+    "id": 140,
+    "date": "2026-03-08",
+    "category": "Rent",
+    "amount": 0.4,
+    "payment_mode": "Card",
+    "month": "2026-03",
+    "source_month": "August"
+  },
+  {
+    "id": 141,
+    "date": "2026-03-10",
+    "category": "Food",
+    "amount": 11.84,
+    "payment_mode": "Cash",
+    "month": "2026-03",
+    "source_month": "June"
+  },
+  {
+    "id": 142,
+    "date": "2026-03-11",
+    "category": "Health",
+    "amount": 35.73,
+    "payment_mode": "Card",
+    "month": "2026-03",
+    "source_month": "February"
+  },
+  {
+    "id": 143,
+    "date": "2026-03-12",
+    "category": "Rent",
+    "amount": 4.14,
+    "payment_mode": "Cash",
+    "month": "2026-03",
+    "source_month": "July"
+  },
+  {
+    "id": 144,
+    "date": "2026-03-12",
+    "category": "Utilities",
+    "amount": 52.66,
+    "payment_mode": "Online",
+    "month": "2026-03",
+    "source_month": "August"
+  },
+  {
+    "id": 145,
+    "date": "2026-03-14",
+    "category": "Entertainment",
+    "amount": 50.69,
+    "payment_mode": "Cash",
+    "month": "2026-03",
+    "source_month": "July"
+  },
+  {
+    "id": 146,
+    "date": "2026-03-15",
+    "category": "Transport",
+    "amount": 35.14,
+    "payment_mode": "Online",
+    "month": "2026-03",
+    "source_month": "October"
+  },
+  {
+    "id": 147,
+    "date": "2026-03-16",
+    "category": "Entertainment",
+    "amount": 19.75,
+    "payment_mode": "Card",
+    "month": "2026-03",
+    "source_month": "January"
+  },
+  {
+    "id": 148,
+    "date": "2026-03-17",
+    "category": "Entertainment",
+    "amount": 6.36,
+    "payment_mode": "Card",
+    "month": "2026-03",
+    "source_month": "November"
+  },
+  {
+    "id": 149,
+    "date": "2026-03-21",
+    "category": "Shopping",
+    "amount": 10.92,
+    "payment_mode": "Card",
+    "month": "2026-03",
+    "source_month": "June"
+  },
+  {
+    "id": 150,
+    "date": "2026-03-23",
+    "category": "Rent",
+    "amount": 11.93,
+    "payment_mode": "Online",
+    "month": "2026-03",
+    "source_month": "November"
+  },
+  {
+    "id": 151,
+    "date": "2026-03-25",
+    "category": "Entertainment",
+    "amount": 5.15,
+    "payment_mode": "Card",
+    "month": "2026-03",
+    "source_month": "December"
+  },
+  {
+    "id": 152,
+    "date": "2026-03-25",
+    "category": "Health",
+    "amount": 33.24,
+    "payment_mode": "Cash",
+    "month": "2026-03",
+    "source_month": "January"
+  },
+  {
+    "id": 153,
+    "date": "2026-03-26",
+    "category": "Entertainment",
+    "amount": 33.57,
+    "payment_mode": "Cash",
+    "month": "2026-03",
+    "source_month": "February"
+  },
+  {
+    "id": 154,
+    "date": "2026-03-26",
+    "category": "Health",
+    "amount": 8.77,
+    "payment_mode": "Cash",
+    "month": "2026-03",
+    "source_month": "February"
+  },
+  {
+    "id": 155,
+    "date": "2026-03-26",
+    "category": "Shopping",
+    "amount": 29.04,
+    "payment_mode": "Card",
+    "month": "2026-03",
+    "source_month": "July"
+  },
+  {
+    "id": 156,
+    "date": "2026-03-26",
+    "category": "Utilities",
+    "amount": 14.77,
+    "payment_mode": "Online",
+    "month": "2026-03",
+    "source_month": "June"
+  },
+  {
+    "id": 157,
+    "date": "2026-03-28",
+    "category": "Shopping",
+    "amount": 41.65,
+    "payment_mode": "Cash",
+    "month": "2026-03",
+    "source_month": "August"
+  },
+  {
+    "id": 158,
+    "date": "2026-03-29",
+    "category": "Entertainment",
+    "amount": 52.33,
+    "payment_mode": "Card",
+    "month": "2026-03",
+    "source_month": "May"
+  },
+  {
+    "id": 159,
+    "date": "2026-03-29",
+    "category": "Transport",
+    "amount": 25.45,
+    "payment_mode": "Online",
+    "month": "2026-03",
+    "source_month": "October"
+  },
+  {
+    "id": 160,
+    "date": "2026-03-30",
+    "category": "Shopping",
+    "amount": 15.24,
+    "payment_mode": "Cash",
+    "month": "2026-03",
+    "source_month": "April"
+  },
+  {
+    "id": 161,
+    "date": "2026-03-30",
+    "category": "Utilities",
+    "amount": 34.28,
+    "payment_mode": "Cash",
+    "month": "2026-03",
+    "source_month": "November"
+  },
+  {
+    "id": 162,
+    "date": "2026-04-01",
+    "category": "Entertainment",
+    "amount": 25.06,
+    "payment_mode": "Online",
+    "month": "2026-04",
+    "source_month": "April"
+  },
+  {
+    "id": 163,
+    "date": "2026-04-01",
+    "category": "Transport",
+    "amount": 52.73,
+    "payment_mode": "Cash",
+    "month": "2026-04",
+    "source_month": "February"
+  },
+  {
+    "id": 164,
+    "date": "2026-04-02",
+    "category": "Entertainment",
+    "amount": 25.46,
+    "payment_mode": "Cash",
+    "month": "2026-04",
+    "source_month": "October"
+  },
+  {
+    "id": 165,
+    "date": "2026-04-03",
+    "category": "Entertainment",
+    "amount": 26.53,
+    "payment_mode": "Card",
+    "month": "2026-04",
+    "source_month": "August"
+  },
+  {
+    "id": 166,
+    "date": "2026-04-03",
+    "category": "Shopping",
+    "amount": 9.26,
+    "payment_mode": "Card",
+    "month": "2026-04",
+    "source_month": "January"
+  },
+  {
+    "id": 167,
+    "date": "2026-04-04",
+    "category": "Food",
+    "amount": 43.92,
+    "payment_mode": "Card",
+    "month": "2026-04",
+    "source_month": "December"
+  },
+  {
+    "id": 168,
+    "date": "2026-04-05",
+    "category": "Food",
+    "amount": 10.26,
+    "payment_mode": "Cash",
+    "month": "2026-04",
+    "source_month": "April"
+  },
+  {
+    "id": 169,
+    "date": "2026-04-06",
+    "category": "Transport",
+    "amount": 11.63,
+    "payment_mode": "Card",
+    "month": "2026-04",
+    "source_month": "March"
+  },
+  {
+    "id": 170,
+    "date": "2026-04-07",
+    "category": "Health",
+    "amount": 0.36,
+    "payment_mode": "Online",
+    "month": "2026-04",
+    "source_month": "March"
+  },
+  {
+    "id": 171,
+    "date": "2026-04-08",
+    "category": "Entertainment",
+    "amount": 52.42,
+    "payment_mode": "Cash",
+    "month": "2026-04",
+    "source_month": "August"
+  },
+  {
+    "id": 172,
+    "date": "2026-04-08",
+    "category": "Health",
+    "amount": 42.84,
+    "payment_mode": "Online",
+    "month": "2026-04",
+    "source_month": "April"
+  },
+  {
+    "id": 173,
+    "date": "2026-04-08",
+    "category": "Transport",
+    "amount": 3.1,
+    "payment_mode": "Online",
+    "month": "2026-04",
+    "source_month": "December"
+  },
+  {
+    "id": 174,
+    "date": "2026-04-09",
+    "category": "Food",
+    "amount": 3.89,
+    "payment_mode": "Cash",
+    "month": "2026-04",
+    "source_month": "April"
+  },
+  {
+    "id": 175,
+    "date": "2026-04-09",
+    "category": "Health",
+    "amount": 7.28,
+    "payment_mode": "Card",
+    "month": "2026-04",
+    "source_month": "November"
+  },
+  {
+    "id": 176,
+    "date": "2026-04-10",
+    "category": "Entertainment",
+    "amount": 35.25,
+    "payment_mode": "Cash",
+    "month": "2026-04",
+    "source_month": "May"
+  },
+  {
+    "id": 177,
+    "date": "2026-04-11",
+    "category": "Food",
+    "amount": 39.39,
+    "payment_mode": "Online",
+    "month": "2026-04",
+    "source_month": "March"
+  },
+  {
+    "id": 178,
+    "date": "2026-04-12",
+    "category": "Rent",
+    "amount": 40.11,
+    "payment_mode": "Cash",
+    "month": "2026-04",
+    "source_month": "April"
+  },
+  {
+    "id": 179,
+    "date": "2026-04-13",
+    "category": "Transport",
+    "amount": 47.23,
+    "payment_mode": "Cash",
+    "month": "2026-04",
+    "source_month": "June"
+  },
+  {
+    "id": 180,
+    "date": "2026-04-14",
+    "category": "Utilities",
+    "amount": 41.16,
+    "payment_mode": "Cash",
+    "month": "2026-04",
+    "source_month": "December"
+  },
+  {
+    "id": 181,
+    "date": "2026-04-15",
+    "category": "Rent",
+    "amount": 4.11,
+    "payment_mode": "Cash",
+    "month": "2026-04",
+    "source_month": "February"
+  },
+  {
+    "id": 182,
+    "date": "2026-04-16",
+    "category": "Rent",
+    "amount": 4.64,
+    "payment_mode": "Online",
+    "month": "2026-04",
+    "source_month": "April"
+  },
+  {
+    "id": 183,
+    "date": "2026-04-16",
+    "category": "Utilities",
+    "amount": 32.09,
+    "payment_mode": "Online",
+    "month": "2026-04",
+    "source_month": "December"
+  },
+  {
+    "id": 184,
+    "date": "2026-04-17",
+    "category": "Utilities",
+    "amount": 12.74,
+    "payment_mode": "Online",
+    "month": "2026-04",
+    "source_month": "June"
+  },
+  {
+    "id": 185,
+    "date": "2026-04-18",
+    "category": "Food",
+    "amount": 6.44,
+    "payment_mode": "Cash",
+    "month": "2026-04",
+    "source_month": "January"
+  },
+  {
+    "id": 186,
+    "date": "2026-04-18",
+    "category": "Rent",
+    "amount": 10.19,
+    "payment_mode": "Cash",
+    "month": "2026-04",
+    "source_month": "March"
+  },
+  {
+    "id": 187,
+    "date": "2026-04-19",
+    "category": "Transport",
+    "amount": 42.14,
+    "payment_mode": "Online",
+    "month": "2026-04",
+    "source_month": "June"
+  },
+  {
+    "id": 188,
+    "date": "2026-04-20",
+    "category": "Transport",
+    "amount": 28.59,
+    "payment_mode": "Online",
+    "month": "2026-04",
+    "source_month": "March"
+  },
+  {
+    "id": 189,
+    "date": "2026-04-21",
+    "category": "Health",
+    "amount": 25.09,
+    "payment_mode": "Cash",
+    "month": "2026-04",
+    "source_month": "February"
+  },
+  {
+    "id": 190,
+    "date": "2026-04-22",
+    "category": "Transport",
+    "amount": 24.6,
+    "payment_mode": "Card",
+    "month": "2026-04",
+    "source_month": "September"
+  }
+]
