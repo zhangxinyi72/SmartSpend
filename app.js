@@ -32,6 +32,9 @@ const SMTP_FROM = process.env.SMTP_FROM || SMTP_USER || '';
 const APP_BASE_URL = process.env.APP_BASE_URL || `http://localhost:${PORT}`;
 const LEGACY_DATA_OWNER_EMAIL = normalizeEmail(process.env.LEGACY_DATA_OWNER_EMAIL || '');
 const DEMO_EMAIL = 'demo@smartspend.com';
+const REMOVE_DEMO_ARTIFACTS = String(process.env.REMOVE_DEMO_ARTIFACTS || 'false').toLowerCase() === 'true';
+const PASSWORD_RESET_MAX_ATTEMPTS = readPositiveInt(process.env.PASSWORD_RESET_MAX_ATTEMPTS, 5);
+const EXPENSE_SEARCH_MAX_LENGTH = readPositiveInt(process.env.EXPENSE_SEARCH_MAX_LENGTH, 80);
 let indexesPromise = null;
 let mailTransporter = null;
 
@@ -101,6 +104,15 @@ function getIdFromPath(pathname) {
 
 function normalizeEmail(email) {
     return String(email || '').trim().toLowerCase();
+}
+
+function readPositiveInt(value, fallback) {
+    const parsed = Number.parseInt(value, 10);
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function escapeRegexLiteral(value) {
+    return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 function isValidEmail(email) {
@@ -683,7 +695,9 @@ async function initializeApp() {
         const db = client.db(DB_NAME);
         await db.command({ ping: 1 });
         await ensureIndexes(db);
-        await removeDemoArtifacts(db);
+        if (REMOVE_DEMO_ARTIFACTS) {
+            await removeDemoArtifacts(db);
+        }
         await migrateLegacyFinanceData(db);
         console.log(`Connected to MongoDB database "${DB_NAME}" at ${MONGO_URL}`);
     } finally {
@@ -1133,6 +1147,7 @@ const server = http.createServer((req, res) => {
                             passwordResetCodeHash: hashVerificationCode(code),
                             passwordResetCodeExpiresAt: expiresAt,
                             passwordResetRequestedAt: nowIso,
+                            passwordResetAttemptCount: 0,
                             updated_at: nowIso
                         }
                     }
@@ -1175,7 +1190,48 @@ const server = http.createServer((req, res) => {
                     return;
                 }
 
+                const nowIso = new Date().toISOString();
+                const attemptReservation = await usersCollection.updateOne(
+                    {
+                        _id: user._id,
+                        passwordResetCodeHash: user.passwordResetCodeHash,
+                        passwordResetCodeExpiresAt: user.passwordResetCodeExpiresAt,
+                        $or: [
+                            { passwordResetAttemptCount: { $exists: false } },
+                            { passwordResetAttemptCount: { $lt: PASSWORD_RESET_MAX_ATTEMPTS } }
+                        ]
+                    },
+                    {
+                        $inc: { passwordResetAttemptCount: 1 },
+                        $set: { updated_at: nowIso }
+                    }
+                );
+
+                if (attemptReservation.matchedCount !== 1) {
+                    sendJson(res, 400, { error: 'Too many invalid reset attempts. Please request a new code.' });
+                    return;
+                }
+
                 if (hashVerificationCode(code) !== user.passwordResetCodeHash) {
+                    const updatedUser = await usersCollection.findOne({ _id: user._id });
+                    const attemptCount = Number(updatedUser?.passwordResetAttemptCount || 0);
+
+                    if (attemptCount >= PASSWORD_RESET_MAX_ATTEMPTS) {
+                        await usersCollection.updateOne(
+                            { _id: user._id },
+                            {
+                                $set: {
+                                    updated_at: nowIso
+                                },
+                                $unset: {
+                                    passwordResetCodeHash: '',
+                                    passwordResetCodeExpiresAt: '',
+                                    passwordResetRequestedAt: ''
+                                }
+                            }
+                        );
+                    }
+
                     sendJson(res, 400, { error: invalidCodeMessage });
                     return;
                 }
@@ -1193,7 +1249,8 @@ const server = http.createServer((req, res) => {
                             sessionTokenHash: '',
                             passwordResetCodeHash: '',
                             passwordResetCodeExpiresAt: '',
-                            passwordResetRequestedAt: ''
+                            passwordResetRequestedAt: '',
+                            passwordResetAttemptCount: ''
                         }
                     }
                 );
@@ -1498,10 +1555,19 @@ const server = http.createServer((req, res) => {
                 }
 
                 if (search) {
-                    filters.$or = [
-                        { description: { $regex: search, $options: 'i' } },
-                        { category: { $regex: search, $options: 'i' } }
-                    ];
+                    const searchTerm = String(search).trim();
+                    if (searchTerm.length > EXPENSE_SEARCH_MAX_LENGTH) {
+                        sendJson(res, 400, { error: `Search must be ${EXPENSE_SEARCH_MAX_LENGTH} characters or fewer` });
+                        return;
+                    }
+
+                    if (searchTerm) {
+                        const escapedSearch = escapeRegexLiteral(searchTerm);
+                        filters.$or = [
+                            { description: { $regex: escapedSearch, $options: 'i' } },
+                            { category: { $regex: escapedSearch, $options: 'i' } }
+                        ];
+                    }
                 }
 
                 const expenses = await expensesCollection

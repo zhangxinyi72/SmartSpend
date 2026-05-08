@@ -1,5 +1,57 @@
 import { clearAuthSession, getStoredToken, getCategoryColor } from './utils.js';
 
+function isLoopbackHost(hostname) {
+    const h = String(hostname || '').toLowerCase();
+    return h === 'localhost' || h === '127.0.0.1' || h === '::1' || h === '[::1]';
+}
+
+function isPrivateIpv4Host(hostname) {
+    const parts = String(hostname || '').split('.').map(part => Number(part));
+    if (parts.length !== 4 || parts.some(part => !Number.isInteger(part) || part < 0 || part > 255)) {
+        return false;
+    }
+
+    return (
+        parts[0] === 10 ||
+        (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) ||
+        (parts[0] === 192 && parts[1] === 168) ||
+        (parts[0] === 169 && parts[1] === 254)
+    );
+}
+
+function isLocalNetworkHost(hostname) {
+    return isLoopbackHost(hostname) || isPrivateIpv4Host(hostname);
+}
+
+function normalizeApiBaseUrl(url) {
+    if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) {
+        return '';
+    }
+
+    const pathname = url.pathname.replace(/\/+$/, '');
+    return `${url.origin}${pathname}`;
+}
+
+function parseApiBaseUrl(raw) {
+    try {
+        const parsed = new URL(String(raw || '').trim(), window.location.origin);
+        return normalizeApiBaseUrl(parsed);
+    } catch {
+        return '';
+    }
+}
+
+function canApplyApiBaseFromQuery(normalizedUrl) {
+    try {
+        const pageHost = window.location.hostname;
+        const targetHost = new URL(normalizedUrl).hostname;
+
+        return isLocalNetworkHost(pageHost) && isLocalNetworkHost(targetHost);
+    } catch {
+        return false;
+    }
+}
+
 /**
  * If the page is opened on a real device or production host, ignore API base URLs
  * that point at localhost/127.0.0.1 (often left in localStorage from dev).
@@ -7,17 +59,12 @@ import { clearAuthSession, getStoredToken, getCategoryColor } from './utils.js';
  */
 function shouldIgnoreLocalhostApiOverride(urlStr) {
     const locHost = window.location.hostname;
-    const onLocalPage =
-        locHost === 'localhost' ||
-        locHost === '127.0.0.1' ||
-        locHost === '[::1]';
-    if (onLocalPage) {
+    if (isLoopbackHost(locHost)) {
         return false;
     }
     try {
         const u = new URL(urlStr, window.location.origin);
-        const h = u.hostname;
-        return h === 'localhost' || h === '127.0.0.1' || h === '[::1]';
+        return isLoopbackHost(u.hostname);
     } catch {
         return false;
     }
@@ -28,7 +75,7 @@ const DEFAULT_PRODUCTION_API_BASE = 'https://smartspend-ccwe.onrender.com';
 
 let apiBaseQueryChecked = false;
 
-/** 在地址栏用一次，例如 &apiBase=http%3A%2F%2F192.168.1.10%3A3001  让手机与电脑用同一本机/局域网后端 */
+/** 在本地/局域网开发时用一次，例如 &apiBase=http%3A%2F%2F192.168.1.10%3A3001 */
 function applyApiBaseQueryOnce() {
     if (apiBaseQueryChecked) {
         return;
@@ -39,17 +86,19 @@ function applyApiBaseQueryOnce() {
         if (!raw) {
             return;
         }
-        const v = raw.trim();
-        if (v) {
-            window.localStorage.setItem('SMARTSPEND_API_BASE_URL', v);
-            const u = new URL(window.location.href);
-            u.searchParams.delete('apiBase');
-            window.history.replaceState(
-                null,
-                '',
-                `${u.pathname}${u.search}${u.hash}` || u.pathname
-            );
+
+        const normalized = parseApiBaseUrl(raw);
+        if (normalized && canApplyApiBaseFromQuery(normalized)) {
+            window.localStorage.setItem('SMARTSPEND_API_BASE_URL', normalized);
         }
+
+        const u = new URL(window.location.href);
+        u.searchParams.delete('apiBase');
+        window.history.replaceState(
+            null,
+            '',
+            `${u.pathname}${u.search}${u.hash}` || u.pathname
+        );
     } catch {
         // ignore
     }
@@ -68,8 +117,8 @@ function getBaseUrl() {
     ).trim();
 
     if (configuredBaseUrl) {
-        const normalized = configuredBaseUrl.replace(/\/+$/, '');
-        if (shouldIgnoreLocalhostApiOverride(normalized)) {
+        const normalized = parseApiBaseUrl(configuredBaseUrl);
+        if (!normalized || shouldIgnoreLocalhostApiOverride(normalized)) {
             try {
                 window.localStorage?.removeItem('SMARTSPEND_API_BASE_URL');
             } catch {
