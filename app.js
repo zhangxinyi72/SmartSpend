@@ -94,6 +94,18 @@ function createHttpError(statusCode, message) {
     return error;
 }
 
+function parseRequestUrl(req) {
+    try {
+        const requestUrl = new URL(req.url, `http://${req.headers.host || `localhost:${PORT}`}`);
+        return {
+            requestUrl,
+            pathname: decodeURIComponent(requestUrl.pathname)
+        };
+    } catch {
+        return null;
+    }
+}
+
 function getIdFromPath(pathname) {
     const parts = pathname.split('/').filter(Boolean);
     return parts[2] || null;
@@ -937,8 +949,13 @@ async function maybeSendBudgetAlert({ user, expense, usersCollection, expensesCo
 }
 
 const server = http.createServer((req, res) => {
-    const requestUrl = new URL(req.url, `http://${req.headers.host || `localhost:${PORT}`}`);
-    const pathname = decodeURIComponent(requestUrl.pathname);
+    const requestContext = parseRequestUrl(req);
+    if (!requestContext) {
+        sendJson(res, 400, { error: 'Malformed request URL' });
+        return;
+    }
+
+    const { requestUrl, pathname } = requestContext;
 
     if (req.method === 'OPTIONS') {
         res.writeHead(200, {
