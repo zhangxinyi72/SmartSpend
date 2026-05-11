@@ -142,6 +142,38 @@ function getMonthFromDate(dateString) {
     return String(dateString || new Date().toISOString().slice(0, 10)).slice(0, 7);
 }
 
+function isValidExpenseDate(value) {
+    if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        return false;
+    }
+
+    const [year, month, day] = value.split('-').map(Number);
+    const parsed = new Date(`${value}T00:00:00Z`);
+    return (
+        !Number.isNaN(parsed.getTime()) &&
+        parsed.getUTCFullYear() === year &&
+        parsed.getUTCMonth() + 1 === month &&
+        parsed.getUTCDate() === day
+    );
+}
+
+function getExpenseYearMonth(value) {
+    if (isValidExpenseDate(value)) {
+        const [year, month] = value.split('-').map(Number);
+        return { year, month };
+    }
+
+    if (value instanceof Date && !Number.isNaN(value.getTime())) {
+        return { year: value.getFullYear(), month: value.getMonth() + 1 };
+    }
+
+    return null;
+}
+
+function escapeRegExp(value) {
+    return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function normalizeBudgetCategory(category) {
     const raw = String(category || '').trim().toLowerCase();
     if (!raw) return '';
@@ -1498,9 +1530,15 @@ const server = http.createServer((req, res) => {
                 }
 
                 if (search) {
+                    const safeSearch = escapeRegExp(search.trim().slice(0, 100));
+                    if (!safeSearch) {
+                        sendJson(res, 400, { error: 'Search query cannot be empty' });
+                        return;
+                    }
+
                     filters.$or = [
-                        { description: { $regex: search, $options: 'i' } },
-                        { category: { $regex: search, $options: 'i' } }
+                        { description: { $regex: safeSearch, $options: 'i' } },
+                        { category: { $regex: safeSearch, $options: 'i' } }
                     ];
                 }
 
@@ -1521,9 +1559,20 @@ const server = http.createServer((req, res) => {
                     return;
                 }
 
+                const amount = Number(body.amount);
+                if (!Number.isFinite(amount) || amount <= 0) {
+                    sendJson(res, 400, { error: 'Invalid amount' });
+                    return;
+                }
+
+                if (!isValidExpenseDate(body.date)) {
+                    sendJson(res, 400, { error: 'Date must use YYYY-MM-DD format' });
+                    return;
+                }
+
                 const newExpense = {
                     userId: user._id.toString(),
-                    amount: Number(body.amount),
+                    amount,
                     category: body.category,
                     description: body.description || '',
                     date: body.date,
@@ -1569,10 +1618,23 @@ const server = http.createServer((req, res) => {
                 const body = await readRequestBody(req);
                 const updateData = {};
 
-                if (body.amount != null) updateData.amount = Number(body.amount);
+                if (body.amount != null) {
+                    const amount = Number(body.amount);
+                    if (!Number.isFinite(amount) || amount <= 0) {
+                        sendJson(res, 400, { error: 'Invalid amount' });
+                        return;
+                    }
+                    updateData.amount = amount;
+                }
                 if (body.category != null) updateData.category = body.category;
                 if (body.description != null) updateData.description = body.description;
-                if (body.date != null) updateData.date = body.date;
+                if (body.date != null) {
+                    if (!isValidExpenseDate(body.date)) {
+                        sendJson(res, 400, { error: 'Date must use YYYY-MM-DD format' });
+                        return;
+                    }
+                    updateData.date = body.date;
+                }
 
                 if (Object.keys(updateData).length === 0) {
                     sendJson(res, 400, { error: 'No fields to update' });
@@ -1831,8 +1893,8 @@ const server = http.createServer((req, res) => {
 
                     const total = allExpenses
                         .filter(expense => {
-                            const [y, m] = expense.date.split('-').map(Number);
-                            return y === year && m === month;
+                            const expenseMonth = getExpenseYearMonth(expense.date);
+                            return expenseMonth?.year === year && expenseMonth.month === month;
                         })
                         .reduce((sum, expense) => sum + Number(expense.amount), 0);
 

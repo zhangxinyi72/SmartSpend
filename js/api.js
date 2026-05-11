@@ -174,6 +174,33 @@ function daysAgoDate(n) {
 const DEMO_TOKEN = 'smartspend-local-demo-token';
 const DEMO_USER = { id: 'local-demo-user', name: 'SmartSpend Demo', email: 'demo@smartspend.ai', email_verified: true };
 function isNetworkError(error) { return error instanceof TypeError || /Failed to fetch|NetworkError|fetch/i.test(String(error?.message || error)); }
+function isLocalDemoEnvironment() {
+    if (typeof window === 'undefined') return false;
+    const host = window.location.hostname;
+    let localDemoOptIn = false;
+    try {
+        localDemoOptIn = window.localStorage?.getItem('SMARTSPEND_ENABLE_LOCAL_DEMO') === 'true';
+    } catch {
+        localDemoOptIn = false;
+    }
+    return (
+        window.location.protocol === 'file:' ||
+        host === 'localhost' ||
+        host === '127.0.0.1' ||
+        host === '[::1]' ||
+        window.__SMARTSPEND_ENABLE_LOCAL_DEMO === true ||
+        localDemoOptIn
+    );
+}
+function canUseLocalDemoFallback() {
+    const token = getStoredToken();
+    return (!token || token === DEMO_TOKEN) && isLocalDemoEnvironment();
+}
+function rethrowUnlessLocalDemoFallback(error) {
+    if (!isNetworkError(error) || !canUseLocalDemoFallback()) {
+        throw error;
+    }
+}
 function makeId(prefix='local') { return prefix + '-' + Date.now() + '-' + Math.random().toString(16).slice(2); }
 function localRead(key, fallback) { try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; } catch { return fallback; } }
 function localWrite(key, value) { localStorage.setItem(key, JSON.stringify(value)); return value; }
@@ -233,7 +260,7 @@ export async function registerUser({ name, email, password }) {
         const response = await fetch(`${getBaseUrl()}/api/register`, { method: 'POST', headers: getAuthHeaders(true), body: JSON.stringify({ name, email, password }) });
         return await handleResponse(response, 'Registration failed');
     } catch (error) {
-        if (!isNetworkError(error)) throw error;
+        rethrowUnlessLocalDemoFallback(error);
         const user = { ...DEMO_USER, name: name || 'SmartSpend User', email, id: makeId('user') };
         localWrite('smartspendLocalUser', user); seedLocalExpenses(); seedLocalBudgets();
         return { user, token: DEMO_TOKEN, mode: 'local-demo' };
@@ -245,7 +272,7 @@ export async function loginUser(email, password) {
         const response = await fetch(`${getBaseUrl()}/api/login`, { method: 'POST', headers: getAuthHeaders(true), body: JSON.stringify({ email, password }) });
         return await handleResponse(response, 'Login failed');
     } catch (error) {
-        if (!isNetworkError(error)) throw error;
+        rethrowUnlessLocalDemoFallback(error);
         const user = localRead('smartspendLocalUser', { ...DEMO_USER, email: email || DEMO_USER.email });
         seedLocalExpenses(); seedLocalBudgets();
         return { user, token: DEMO_TOKEN, mode: 'local-demo' };
@@ -254,57 +281,65 @@ export async function loginUser(email, password) {
 
 export async function requestPasswordReset(email) {
     try { const response = await fetch(`${getBaseUrl()}/api/password-reset/request`, { method: 'POST', headers: getAuthHeaders(true), body: JSON.stringify({ email }) }); return await handleResponse(response, 'Failed to send reset email'); }
-    catch (error) { if (!isNetworkError(error)) throw error; return { message: 'Local demo mode: use any 6-digit code to continue.' }; }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); return { message: 'Local demo mode: use any 6-digit code to continue.' }; }
 }
 
 export async function confirmPasswordReset({ email, code, newPassword }) {
     try { const response = await fetch(`${getBaseUrl()}/api/password-reset/confirm`, { method: 'POST', headers: getAuthHeaders(true), body: JSON.stringify({ email, code, newPassword }) }); return await handleResponse(response, 'Failed to reset password'); }
-    catch (error) { if (!isNetworkError(error)) throw error; return { message: 'Local demo password updated.' }; }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); return { message: 'Local demo password updated.' }; }
 }
 
 export async function logoutUser() {
     try { const response = await fetch(`${getBaseUrl()}/api/logout`, { method: 'POST', headers: getAuthHeaders() }); return await handleResponse(response, 'Logout failed'); }
-    catch (error) { if (!isNetworkError(error)) throw error; return { message: 'Logged out locally.' }; }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); return { message: 'Logged out locally.' }; }
 }
 
 export async function getProfile() {
     try { const response = await fetch(`${getBaseUrl()}/api/profile`, { headers: getAuthHeaders() }); return await handleResponse(response, 'Failed to load profile'); }
-    catch (error) { if (!isNetworkError(error)) throw error; return { user: localRead('smartspendLocalUser', DEMO_USER) }; }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); return localRead('smartspendLocalUser', DEMO_USER); }
 }
 
 export async function updateProfile(data) {
     try { const response = await fetch(`${getBaseUrl()}/api/profile`, { method: 'PUT', headers: getAuthHeaders(true), body: JSON.stringify(data) }); return await handleResponse(response, 'Failed to update profile'); }
-    catch (error) { if (!isNetworkError(error)) throw error; const user = { ...localRead('smartspendLocalUser', DEMO_USER), ...data }; localWrite('smartspendLocalUser', user); return { user, message: 'Profile updated locally.' }; }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); const user = { ...localRead('smartspendLocalUser', DEMO_USER), ...data }; localWrite('smartspendLocalUser', user); return user; }
 }
 
 export async function getAccountSettings() {
     try { const response = await fetch(`${getBaseUrl()}/api/account-settings`, { headers: getAuthHeaders() }); return await handleResponse(response, 'Failed to load account settings'); }
-    catch (error) { if (!isNetworkError(error)) throw error; return localRead('smartspendLocalSettings', { budget_alerts: true, weekly_digest: true, currency: 'USD' }); }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); return localRead('smartspendLocalSettings', { budget_alerts: true, weekly_digest: true, currency: 'USD' }); }
 }
 
 export async function updateAccountSettings(data) {
     try { const response = await fetch(`${getBaseUrl()}/api/account-settings`, { method: 'PUT', headers: getAuthHeaders(true), body: JSON.stringify(data) }); return await handleResponse(response, 'Failed to update account settings'); }
-    catch (error) { if (!isNetworkError(error)) throw error; return localWrite('smartspendLocalSettings', data); }
+    catch (error) {
+        rethrowUnlessLocalDemoFallback(error);
+        const user = localRead('smartspendLocalUser', DEMO_USER);
+        const accountSettings = { ...(user.accountSettings || {}), ...data };
+        const nextUser = { ...user, accountSettings };
+        localWrite('smartspendLocalUser', nextUser);
+        localWrite('smartspendLocalSettings', accountSettings);
+        return { user: nextUser, message: 'Settings updated locally.' };
+    }
 }
 
 export async function sendVerificationEmail() {
     try { const response = await fetch(`${getBaseUrl()}/api/account-settings/send-verification-email`, { method: 'POST', headers: getAuthHeaders() }); return await handleResponse(response, 'Failed to send verification email'); }
-    catch (error) { if (!isNetworkError(error)) throw error; return { message: 'Local demo mode: verification email simulated.' }; }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); return { message: 'Local demo mode: verification email simulated.' }; }
 }
 
 export async function verifyEmailCode(code) {
     try { const response = await fetch(`${getBaseUrl()}/api/account-settings/verify-email`, { method: 'POST', headers: getAuthHeaders(true), body: JSON.stringify({ code }) }); return await handleResponse(response, 'Failed to verify email'); }
-    catch (error) { if (!isNetworkError(error)) throw error; return { message: 'Email verified locally.' }; }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); return { message: 'Email verified locally.' }; }
 }
 
 export async function sendTestEmail() {
     try { const response = await fetch(`${getBaseUrl()}/api/account-settings/test-email`, { method: 'POST', headers: getAuthHeaders() }); return await handleResponse(response, 'Failed to send test email'); }
-    catch (error) { if (!isNetworkError(error)) throw error; return { message: 'Local demo mode: test email simulated.' }; }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); return { message: 'Local demo mode: test email simulated.' }; }
 }
 
 export async function sendChatMessage({ message, messages = [], page = {} }) {
     try { const response = await fetch(`${getBaseUrl()}/api/chat`, { method: 'POST', headers: getAuthHeaders(true), body: JSON.stringify({ message, messages, page }) }); return await handleResponse(response, 'Failed to send chat message'); }
-    catch (error) { if (!isNetworkError(error)) throw error; return localChatReply(message); }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); return localChatReply(message); }
 }
 
 // ─── EXPENSES ─────────────────────────────────────────────────
@@ -319,41 +354,41 @@ export async function getExpenses(filters = {}) {
         const response = await fetch(`${getBaseUrl()}/api/expenses?${params.toString()}`, { headers: getAuthHeaders() });
         return await handleResponse(response, 'Failed to fetch expenses');
     } catch (error) {
-        if (!isNetworkError(error)) throw error;
+        rethrowUnlessLocalDemoFallback(error);
         return filterLocalExpenses(filters);
     }
 }
 
 export async function createExpense(data) {
     try { const response = await fetch(`${getBaseUrl()}/api/expenses`, { method: 'POST', headers: getAuthHeaders(true), body: JSON.stringify(data) }); return await handleResponse(response, 'Failed to create expense'); }
-    catch (error) { if (!isNetworkError(error)) throw error; const expenses = seedLocalExpenses(); const item = { ...data, amount: Number(data.amount), _id: makeId('expense'), id: makeId('expense'), created_at: new Date().toISOString() }; expenses.unshift(item); localWrite('smartspendLocalExpenses', expenses); return item; }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); const expenses = seedLocalExpenses(); const item = { ...data, amount: Number(data.amount), _id: makeId('expense'), id: makeId('expense'), created_at: new Date().toISOString() }; expenses.unshift(item); localWrite('smartspendLocalExpenses', expenses); return item; }
 }
 
 export async function updateExpense(id, data) {
     try { const response = await fetch(`${getBaseUrl()}/api/expenses/${id}`, { method: 'PUT', headers: getAuthHeaders(true), body: JSON.stringify(data) }); return await handleResponse(response, 'Failed to update expense'); }
-    catch (error) { if (!isNetworkError(error)) throw error; const expenses = seedLocalExpenses().map(e => (e._id === id || e.id === id) ? { ...e, ...data, amount: Number(data.amount ?? e.amount) } : e); localWrite('smartspendLocalExpenses', expenses); return expenses.find(e => e._id === id || e.id === id); }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); const expenses = seedLocalExpenses().map(e => (e._id === id || e.id === id) ? { ...e, ...data, amount: Number(data.amount ?? e.amount) } : e); localWrite('smartspendLocalExpenses', expenses); return expenses.find(e => e._id === id || e.id === id); }
 }
 
 export async function deleteExpense(id) {
     try { const response = await fetch(`${getBaseUrl()}/api/expenses/${id}`, { method: 'DELETE', headers: getAuthHeaders() }); return await handleResponse(response, 'Failed to delete expense'); }
-    catch (error) { if (!isNetworkError(error)) throw error; localWrite('smartspendLocalExpenses', seedLocalExpenses().filter(e => e._id !== id && e.id !== id)); return { message: 'Expense deleted locally.' }; }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); localWrite('smartspendLocalExpenses', seedLocalExpenses().filter(e => e._id !== id && e.id !== id)); return { message: 'Expense deleted locally.' }; }
 }
 
 // ─── BUDGETS ──────────────────────────────────────────────────
 
 export async function getBudgets() {
     try { const response = await fetch(`${getBaseUrl()}/api/budgets`, { headers: getAuthHeaders() }); return await handleResponse(response, 'Failed to fetch budgets'); }
-    catch (error) { if (!isNetworkError(error)) throw error; return seedLocalBudgets(); }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); return seedLocalBudgets(); }
 }
 
 export async function saveBudget(category, monthly_limit) {
     try { const response = await fetch(`${getBaseUrl()}/api/budgets`, { method: 'POST', headers: getAuthHeaders(true), body: JSON.stringify({ category, monthly_limit }) }); return await handleResponse(response, 'Failed to save budget'); }
-    catch (error) { if (!isNetworkError(error)) throw error; let budgets = seedLocalBudgets(); const existing = budgets.find(b => b.category === category); if (existing) existing.monthly_limit = Number(monthly_limit); else budgets.push({ _id: makeId('budget'), id: makeId('budget'), category, monthly_limit: Number(monthly_limit) }); localWrite('smartspendLocalBudgets', budgets); return budgets.find(b => b.category === category); }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); let budgets = seedLocalBudgets(); const existing = budgets.find(b => b.category === category); if (existing) existing.monthly_limit = Number(monthly_limit); else budgets.push({ _id: makeId('budget'), id: makeId('budget'), category, monthly_limit: Number(monthly_limit) }); localWrite('smartspendLocalBudgets', budgets); return budgets.find(b => b.category === category); }
 }
 
 export async function deleteBudget(id) {
     try { const response = await fetch(`${getBaseUrl()}/api/budgets/${id}`, { method: 'DELETE', headers: getAuthHeaders() }); return await handleResponse(response, 'Failed to delete budget'); }
-    catch (error) { if (!isNetworkError(error)) throw error; localWrite('smartspendLocalBudgets', seedLocalBudgets().filter(b => b._id !== id && b.id !== id)); return { message: 'Budget deleted locally.' }; }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); localWrite('smartspendLocalBudgets', seedLocalBudgets().filter(b => b._id !== id && b.id !== id)); return { message: 'Budget deleted locally.' }; }
 }
 
 // ─── ANALYTICS ────────────────────────────────────────────────
@@ -365,7 +400,7 @@ function getRecentExpensesLocal(expenses, period) {
 
 export async function getAnalyticsSummary(period = 30) {
     try { const response = await fetch(`${getBaseUrl()}/api/analytics/summary?period=${period}`, { headers: getAuthHeaders() }); return await handleResponse(response, 'Failed to fetch analytics summary'); }
-    catch (error) { if (!isNetworkError(error)) throw error; return localSummary(period); }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); return localSummary(period); }
 }
 
 export async function getAnalyticsByCategory(period = 30) {
@@ -410,7 +445,7 @@ export async function getAnalyticsOverTime(period = 30) {
 
 export async function getSixMonthTrend() {
     try { const response = await fetch(`${getBaseUrl()}/api/analytics/six-month-trend`, { headers: getAuthHeaders() }); return await handleResponse(response, 'Failed to fetch six month trend'); }
-    catch (error) { if (!isNetworkError(error)) throw error; return localSixMonthTrend(); }
+    catch (error) { rethrowUnlessLocalDemoFallback(error); return localSixMonthTrend(); }
 }
 
 /** Debug: after `import { getBaseUrl } from './js/api.js'` in console, call `getBaseUrl()` to verify API host. */
