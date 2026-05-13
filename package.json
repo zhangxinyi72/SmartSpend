@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node start-smartspend.cjs",
-    "seed:demo": "node scripts/seed-demo-user.cjs"
+    "seed:demo": "node scripts/seed-demo-user.cjs",
+    "test": "node --test"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
