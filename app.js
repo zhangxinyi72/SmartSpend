@@ -6,6 +6,7 @@ const http = require('http');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const { MongoClient, ObjectId } = require('mongodb');
+const { parseRequestUrl } = require('./lib/request-url.cjs');
 
 const PORT = Number(process.env.PORT || 3001);
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://127.0.0.1:27017';
@@ -937,8 +938,13 @@ async function maybeSendBudgetAlert({ user, expense, usersCollection, expensesCo
 }
 
 const server = http.createServer((req, res) => {
-    const requestUrl = new URL(req.url, `http://${req.headers.host || `localhost:${PORT}`}`);
-    const pathname = decodeURIComponent(requestUrl.pathname);
+    const parsedRequest = parseRequestUrl(req, { port: PORT });
+    if (parsedRequest.error) {
+        sendJson(res, parsedRequest.error.statusCode, { error: parsedRequest.error.message });
+        return;
+    }
+
+    const { requestUrl, pathname } = parsedRequest;
 
     if (req.method === 'OPTIONS') {
         res.writeHead(200, {
