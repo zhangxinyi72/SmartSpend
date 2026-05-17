@@ -1,5 +1,5 @@
 import { getExpenses, getBudgets } from './api.js';
-import { formatCurrency, requireAuth } from './utils.js';
+import { escapeHtml, formatCurrency, requireAuth } from './utils.js';
 
 const dayMs = 24 * 60 * 60 * 1000;
 
@@ -141,17 +141,20 @@ function renderHome(insight) {
   if (!page) return;
   const toneClass = `pro-nudge--${insight.tone}`;
   const driverValue = insight.changeDriver.delta > 0
-    ? `${insight.changeDriver.category} (${signedMoney(insight.changeDriver.delta)})`
+    ? `${escapeHtml(insight.changeDriver.category)} (${signedMoney(insight.changeDriver.delta)})`
     : 'Stable';
+  const anomalyText = insight.anomaly
+    ? escapeHtml(insight.anomaly.description || insight.anomaly.category)
+    : '';
   const html = `
     <section class="pro-insight-grid" aria-label="SmartSpend analytical overview">
       <article class="pro-insight-card">
         <div class="pro-eyebrow">Data-driven Spending Story</div>
-        <h2 class="pro-insight-title">${insight.headline}</h2>
-        <p class="pro-insight-copy">${insight.categorySentence} ${insight.driverSentence}</p>
+        <h2 class="pro-insight-title">${escapeHtml(insight.headline)}</h2>
+        <p class="pro-insight-copy">${escapeHtml(insight.categorySentence)} ${escapeHtml(insight.driverSentence)}</p>
         <div class="pro-metric-strip">
           <div class="pro-metric"><div class="pro-metric__label">7-day spend</div><div class="pro-metric__value">${formatCurrency(insight.total7)}</div></div>
-          <div class="pro-metric"><div class="pro-metric__label">Top category</div><div class="pro-metric__value">${insight.topCategory.category}</div></div>
+          <div class="pro-metric"><div class="pro-metric__label">Top category</div><div class="pro-metric__value">${escapeHtml(insight.topCategory.category)}</div></div>
           <div class="pro-metric"><div class="pro-metric__label">Change driver</div><div class="pro-metric__value">${driverValue}</div></div>
         </div>
       </article>
@@ -159,9 +162,9 @@ function renderHome(insight) {
         <div class="pro-eyebrow">Behavior Nudges</div>
         <div class="pro-nudge-list">
           <div class="pro-nudge ${toneClass}"><strong>Budget forecast:</strong> ${insight.projectedRemaining >= 0 ? `${formatCurrency(insight.projectedRemaining)} projected left this month.` : `${formatCurrency(Math.abs(insight.projectedRemaining))} projected over budget.`}</div>
-          <div class="pro-nudge pro-nudge--info"><strong>Frequency signal:</strong> ${insight.highFrequency.category} has ${Math.round(insight.highFrequency.total)} transactions in the last 30 days.</div>
-          <div class="pro-nudge pro-nudge--good"><strong>Next best action:</strong> ${insight.nextAction}</div>
-          ${insight.anomaly ? `<div class="pro-nudge pro-nudge--info"><strong>Unusual transaction:</strong> ${insight.anomaly.description || insight.anomaly.category} was ${formatCurrency(insight.anomaly.amount)}, above your 30-day average.</div>` : ''}
+          <div class="pro-nudge pro-nudge--info"><strong>Frequency signal:</strong> ${escapeHtml(insight.highFrequency.category)} has ${Math.round(insight.highFrequency.total)} transactions in the last 30 days.</div>
+          <div class="pro-nudge pro-nudge--good"><strong>Next best action:</strong> ${escapeHtml(insight.nextAction)}</div>
+          ${insight.anomaly ? `<div class="pro-nudge pro-nudge--info"><strong>Unusual transaction:</strong> ${anomalyText} was ${formatCurrency(insight.anomaly.amount)}, above your 30-day average.</div>` : ''}
         </div>
       </aside>
     </section>
@@ -187,8 +190,8 @@ function renderAnalytics(insight) {
       <h2 class="pro-insight-title">Top Category and Change Driver are not the same thing.</h2>
       <p class="pro-insight-copy"><strong>Top Category</strong> means the category with the largest total spend in the selected period. <strong>Change Driver</strong> means the category that increased the most versus the previous equal-length period.</p>
       <div class="pro-metric-strip">
-        <div class="pro-metric"><div class="pro-metric__label">Top category</div><div class="pro-metric__value">${insight.topCategory.category}</div></div>
-        <div class="pro-metric"><div class="pro-metric__label">Change driver</div><div class="pro-metric__value">${insight.changeDriver.delta > 0 ? insight.changeDriver.category : 'Stable'}</div></div>
+        <div class="pro-metric"><div class="pro-metric__label">Top category</div><div class="pro-metric__value">${escapeHtml(insight.topCategory.category)}</div></div>
+        <div class="pro-metric"><div class="pro-metric__label">Change driver</div><div class="pro-metric__value">${insight.changeDriver.delta > 0 ? escapeHtml(insight.changeDriver.category) : 'Stable'}</div></div>
         <div class="pro-metric"><div class="pro-metric__label">Driver change</div><div class="pro-metric__value">${driverChange}</div></div>
       </div>
     </section>

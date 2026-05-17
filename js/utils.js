@@ -217,6 +217,16 @@ export function getCategoryIcon(category) {
   return CATEGORY_ICONS[category] || '💸';
 }
 
+export function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[char]));
+}
+
 /**
  * Show a toast notification (success or error)
  * @param {string} message
@@ -233,7 +243,10 @@ export function showToast(message, type = 'success') {
 
   const toast = document.createElement('div');
   toast.className = `toast toast--${type}`;
-  toast.innerHTML = `${type === 'success' ? '✓' : '✕'} ${message}`;
+  const icon = document.createElement('span');
+  icon.textContent = type === 'success' ? '✓ ' : '✕ ';
+  toast.appendChild(icon);
+  toast.appendChild(document.createTextNode(String(message || '')));
   container.appendChild(toast);
 
   setTimeout(() => {
