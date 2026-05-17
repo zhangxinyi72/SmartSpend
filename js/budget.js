@@ -1,7 +1,7 @@
 import { getBudgets, saveBudget, getExpenses, deleteBudget } from './api.js';
 import {
     CATEGORIES, getCategoryColor, getCategoryIcon,
-    formatCurrency, getCurrentMonthLabel, requireAuth, showToast
+    escapeHtml, formatCurrency, getCurrentMonthLabel, requireAuth, showToast
 } from './utils.js';
 
 if (!requireAuth()) {
@@ -67,7 +67,7 @@ async function getLastMonthExpenses() {
     const targetMonth = lastMonth.getMonth() + 1;
 
     return expenses.filter(e => {
-        const [y, m] = e.date.split('-').map(Number);
+        const [y, m] = String(e.date || '').split('-').map(Number);
         return y === targetYear && m === targetMonth;
     });
 }
@@ -144,7 +144,7 @@ function buildSuggestionList(suggestions) {
     <div class="suggestion-list">
       ${suggestions.map(item => `
         <div class="suggestion-item">
-          <strong>${item.category}</strong>: ${formatCurrency(item.currentLimit)} → ${formatCurrency(item.suggestedLimit)}
+          <strong>${escapeHtml(item.category)}</strong>: ${formatCurrency(item.currentLimit)} → ${formatCurrency(item.suggestedLimit)}
         </div>
       `).join('')}
     </div>
@@ -168,8 +168,8 @@ function buildSavingsAdvice(sortedCategories, monthlyTarget, suggestions, mode =
          <p><strong>Target period:</strong> ${months} month(s)</p>`
         : ''}
     <p><strong>Suggested monthly saving target:</strong> ${formatCurrency(monthlyTarget)}</p>
-    <p>Your highest spending category last month was <strong>${top1.category}</strong> (${top1.percentage.toFixed(1)}%).</p>
-    ${top2 ? `<p>Another area to watch is <strong>${top2.category}</strong> (${top2.percentage.toFixed(1)}%).</p>` : ''}
+    <p>Your highest spending category last month was <strong>${escapeHtml(top1.category)}</strong> (${top1.percentage.toFixed(1)}%).</p>
+    ${top2 ? `<p>Another area to watch is <strong>${escapeHtml(top2.category)}</strong> (${top2.percentage.toFixed(1)}%).</p>` : ''}
     <p>Recommended budget adjustments:</p>
     ${buildSuggestionList(suggestions)}
   `;
@@ -281,18 +281,20 @@ function renderBudgetCard(b) {
     const barCls = getBarClass(pct);
     const pctCls = getPctClass(pct);
     const barW   = Math.min(pct, 100).toFixed(1);
+    const safeId = escapeHtml(b.id);
+    const safeCategory = escapeHtml(b.category);
 
     return `
-    <div class="budget-card ${over ? 'budget-card--over' : ''}" id="budget-card-${b.id}" data-id="${b.id}">
+    <div class="budget-card ${over ? 'budget-card--over' : ''}" id="budget-card-${safeId}" data-id="${safeId}">
       <div class="budget-card__header">
         <div class="budget-card__icon" style="background:${color}1A">${icon}</div>
         <span class="budget-card__name">
-          ${b.category}
+          ${safeCategory}
           ${over ? '<span class="budget-card__over-badge">Over budget!</span>' : ''}
         </span>
         <div class="budget-card__actions">
-          <button class="budget-card__edit-btn" data-id="${b.id}" type="button">${isMobile ? 'Save' : 'Edit'}</button>
-          <button class="budget-card__remove-btn" data-id="${b.id}" type="button">Remove</button>
+          <button class="budget-card__edit-btn" data-id="${safeId}" type="button">${isMobile ? 'Save' : 'Edit'}</button>
+          <button class="budget-card__remove-btn" data-id="${safeId}" type="button">Remove</button>
         </div>
       </div>
 
@@ -305,16 +307,16 @@ function renderBudgetCard(b) {
         <div class="progress-bar-fill ${barCls}" style="width:${barW}%"></div>
       </div>
 
-      <div class="budget-edit-form" id="edit-form-${b.id}">
+      <div class="budget-edit-form" id="edit-form-${safeId}">
         <input
           class="budget-edit-input"
-          id="edit-input-${b.id}"
+          id="edit-input-${safeId}"
           type="number"
           min="1"
           value="${b.monthly_limit}"
           placeholder="New limit"
         />
-        <button class="budget-save-btn" data-id="${b.id}" data-cat="${b.category}" type="button">Save</button>
+        <button class="budget-save-btn" data-id="${safeId}" data-cat="${safeCategory}" type="button">Save</button>
       </div>
     </div>`;
 }

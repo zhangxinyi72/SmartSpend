@@ -183,7 +183,8 @@ Create **`.env`** from **`.env.example`**. Important groups:
 | `APP_BASE_URL` | Absolute base URL for links (local or deployed) |
 | `HF_*` | Hugging Face chat (required for `/api/chat`) |
 | `SMTP_*` | Email: verification, reset, notifications, budget alerts |
-| `BUDGET_ALERT_THRESHOLD`, `LEGACY_DATA_OWNER_EMAIL` | Alerts and optional legacy data migration hooks |
+| `BUDGET_ALERT_THRESHOLD`, `MAX_REQUEST_BODY_BYTES` | Budget-alert threshold and JSON body safety limit |
+| `REMOVE_DEMO_ARTIFACTS_ON_START`, `MIGRATE_LEGACY_FINANCE_DATA_ON_START`, `LEGACY_DATA_OWNER_EMAIL` | Optional one-time cleanup/migration hooks; keep disabled unless you intentionally need them |
 
 **Security:** never commit **`.env`** or real tokens. For coursework ZIP submission, include **`.env.example`** only.
 

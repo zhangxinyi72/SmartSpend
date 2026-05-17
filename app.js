@@ -32,6 +32,9 @@ const SMTP_FROM = process.env.SMTP_FROM || SMTP_USER || '';
 const APP_BASE_URL = process.env.APP_BASE_URL || `http://localhost:${PORT}`;
 const LEGACY_DATA_OWNER_EMAIL = normalizeEmail(process.env.LEGACY_DATA_OWNER_EMAIL || '');
 const DEMO_EMAIL = 'demo@smartspend.com';
+const MAX_REQUEST_BODY_BYTES = readPositiveNumberEnv(process.env.MAX_REQUEST_BODY_BYTES, 256 * 1024);
+const REMOVE_DEMO_ARTIFACTS_ON_START = parseBooleanEnv(process.env.REMOVE_DEMO_ARTIFACTS_ON_START);
+const MIGRATE_LEGACY_FINANCE_DATA_ON_START = parseBooleanEnv(process.env.MIGRATE_LEGACY_FINANCE_DATA_ON_START);
 let indexesPromise = null;
 let mailTransporter = null;
 
@@ -52,21 +55,47 @@ const CONTENT_TYPES = {
 function readRequestBody(req) {
     return new Promise((resolve, reject) => {
         let body = '';
+        let bytesRead = 0;
+        let failed = false;
+
+        const contentLength = Number(req.headers['content-length'] || 0);
+        if (contentLength > MAX_REQUEST_BODY_BYTES) {
+            reject(createHttpError(413, 'Request body is too large'));
+            return;
+        }
+
+        function fail(error) {
+            if (failed) {
+                return;
+            }
+            failed = true;
+            reject(error);
+        }
 
         req.on('data', chunk => {
+            bytesRead += chunk.length;
+            if (bytesRead > MAX_REQUEST_BODY_BYTES) {
+                fail(createHttpError(413, 'Request body is too large'));
+                return;
+            }
+
             body += chunk.toString();
         });
 
         req.on('end', () => {
+            if (failed) {
+                return;
+            }
+
             try {
                 resolve(body ? JSON.parse(body) : {});
             } catch (error) {
-                reject(new Error('Invalid JSON body'));
+                fail(createHttpError(400, 'Invalid JSON body'));
             }
         });
 
         req.on('error', error => {
-            reject(error);
+            fail(error);
         });
     });
 }
@@ -92,6 +121,19 @@ function createHttpError(statusCode, message) {
     const error = new Error(message);
     error.statusCode = statusCode;
     return error;
+}
+
+function parseBooleanEnv(value) {
+    return ['1', 'true', 'yes', 'on'].includes(String(value || '').trim().toLowerCase());
+}
+
+function readPositiveNumberEnv(value, fallback) {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function escapeRegExp(value) {
+    return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 function getIdFromPath(pathname) {
@@ -683,8 +725,12 @@ async function initializeApp() {
         const db = client.db(DB_NAME);
         await db.command({ ping: 1 });
         await ensureIndexes(db);
-        await removeDemoArtifacts(db);
-        await migrateLegacyFinanceData(db);
+        if (REMOVE_DEMO_ARTIFACTS_ON_START) {
+            await removeDemoArtifacts(db);
+        }
+        if (MIGRATE_LEGACY_FINANCE_DATA_ON_START) {
+            await migrateLegacyFinanceData(db);
+        }
         console.log(`Connected to MongoDB database "${DB_NAME}" at ${MONGO_URL}`);
     } finally {
         await client.close();
@@ -937,8 +983,16 @@ async function maybeSendBudgetAlert({ user, expense, usersCollection, expensesCo
 }
 
 const server = http.createServer((req, res) => {
-    const requestUrl = new URL(req.url, `http://${req.headers.host || `localhost:${PORT}`}`);
-    const pathname = decodeURIComponent(requestUrl.pathname);
+    let requestUrl;
+    let pathname;
+
+    try {
+        requestUrl = new URL(req.url, `http://${req.headers.host || `localhost:${PORT}`}`);
+        pathname = decodeURIComponent(requestUrl.pathname);
+    } catch (error) {
+        sendJson(res, 400, { error: 'Malformed request URL' });
+        return;
+    }
 
     if (req.method === 'OPTIONS') {
         res.writeHead(200, {
@@ -1498,9 +1552,10 @@ const server = http.createServer((req, res) => {
                 }
 
                 if (search) {
+                    const escapedSearch = escapeRegExp(search);
                     filters.$or = [
-                        { description: { $regex: search, $options: 'i' } },
-                        { category: { $regex: search, $options: 'i' } }
+                        { description: { $regex: escapedSearch, $options: 'i' } },
+                        { category: { $regex: escapedSearch, $options: 'i' } }
                     ];
                 }
 
@@ -1831,6 +1886,9 @@ const server = http.createServer((req, res) => {
 
                     const total = allExpenses
                         .filter(expense => {
+                            if (typeof expense.date !== 'string') {
+                                return false;
+                            }
                             const [y, m] = expense.date.split('-').map(Number);
                             return y === year && m === month;
                         })

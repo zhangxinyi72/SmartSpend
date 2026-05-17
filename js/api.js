@@ -23,6 +23,39 @@ function shouldIgnoreLocalhostApiOverride(urlStr) {
     }
 }
 
+function isPrivateIpv4(hostname) {
+    const parts = String(hostname || '').split('.').map(part => Number(part));
+    if (parts.length !== 4 || parts.some(part => !Number.isInteger(part) || part < 0 || part > 255)) {
+        return false;
+    }
+
+    const [a, b] = parts;
+    return a === 10 || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168);
+}
+
+function isAllowedApiBaseOverride(urlStr) {
+    try {
+        const u = new URL(urlStr, window.location.origin);
+        const h = u.hostname.toLowerCase();
+        const currentHost = window.location.hostname.toLowerCase();
+
+        if (!['http:', 'https:'].includes(u.protocol)) {
+            return false;
+        }
+
+        return (
+            h === currentHost ||
+            h === 'localhost' ||
+            h === '127.0.0.1' ||
+            h === '[::1]' ||
+            h === '::1' ||
+            isPrivateIpv4(h)
+        );
+    } catch {
+        return false;
+    }
+}
+
 /** 与 Vercel `vercel.json` 里 /api 代理到同一台后端，保证手机与电脑用同一套 API/数据库 */
 const DEFAULT_PRODUCTION_API_BASE = 'https://smartspend-ccwe.onrender.com';
 
@@ -40,7 +73,7 @@ function applyApiBaseQueryOnce() {
             return;
         }
         const v = raw.trim();
-        if (v) {
+        if (v && isAllowedApiBaseOverride(v)) {
             window.localStorage.setItem('SMARTSPEND_API_BASE_URL', v);
             const u = new URL(window.location.href);
             u.searchParams.delete('apiBase');
@@ -69,7 +102,7 @@ function getBaseUrl() {
 
     if (configuredBaseUrl) {
         const normalized = configuredBaseUrl.replace(/\/+$/, '');
-        if (shouldIgnoreLocalhostApiOverride(normalized)) {
+        if (!isAllowedApiBaseOverride(normalized) || shouldIgnoreLocalhostApiOverride(normalized)) {
             try {
                 window.localStorage?.removeItem('SMARTSPEND_API_BASE_URL');
             } catch {
@@ -284,7 +317,7 @@ export async function getAccountSettings() {
 
 export async function updateAccountSettings(data) {
     try { const response = await fetch(`${getBaseUrl()}/api/account-settings`, { method: 'PUT', headers: getAuthHeaders(true), body: JSON.stringify(data) }); return await handleResponse(response, 'Failed to update account settings'); }
-    catch (error) { if (!isNetworkError(error)) throw error; return localWrite('smartspendLocalSettings', data); }
+    catch (error) { if (!isNetworkError(error)) throw error; return localWrite('smartspendLocalSettings', { ...localRead('smartspendLocalSettings', { budget_alerts: true, weekly_digest: true, currency: 'USD' }), ...data }); }
 }
 
 export async function sendVerificationEmail() {
