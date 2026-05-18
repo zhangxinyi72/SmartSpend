@@ -25,8 +25,65 @@ function shouldIgnoreLocalhostApiOverride(urlStr) {
 
 /** 与 Vercel `vercel.json` 里 /api 代理到同一台后端，保证手机与电脑用同一套 API/数据库 */
 const DEFAULT_PRODUCTION_API_BASE = 'https://smartspend-ccwe.onrender.com';
+const API_BASE_OVERRIDE_STORAGE_KEY = 'SMARTSPEND_API_BASE_URL';
 
 let apiBaseQueryChecked = false;
+
+function isLocalhostHostname(hostname) {
+    return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]';
+}
+
+function isPrivateIpv4Hostname(hostname) {
+    const parts = String(hostname || '').split('.').map(Number);
+    if (parts.length !== 4 || parts.some(part => !Number.isInteger(part) || part < 0 || part > 255)) {
+        return false;
+    }
+
+    return (
+        parts[0] === 10 ||
+        (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) ||
+        (parts[0] === 192 && parts[1] === 168)
+    );
+}
+
+function isLocalDevelopmentPage() {
+    const { protocol, hostname } = window.location;
+    return protocol === 'file:' || isLocalhostHostname(hostname) || isPrivateIpv4Hostname(hostname);
+}
+
+function removeStoredApiBaseOverride() {
+    try {
+        window.localStorage?.removeItem(API_BASE_OVERRIDE_STORAGE_KEY);
+    } catch {
+        // ignore
+    }
+}
+
+function isAllowedApiBaseOverride(urlStr) {
+    try {
+        const url = new URL(urlStr, window.location.origin);
+        if (!['http:', 'https:'].includes(url.protocol)) {
+            return false;
+        }
+
+        if (url.origin === window.location.origin) {
+            return true;
+        }
+
+        if (url.origin === new URL(DEFAULT_PRODUCTION_API_BASE).origin) {
+            return true;
+        }
+
+        const overrideHost = url.hostname;
+        if ((isLocalhostHostname(overrideHost) || isPrivateIpv4Hostname(overrideHost)) && isLocalDevelopmentPage()) {
+            return true;
+        }
+    } catch {
+        return false;
+    }
+
+    return false;
+}
 
 /** 在地址栏用一次，例如 &apiBase=http%3A%2F%2F192.168.1.10%3A3001  让手机与电脑用同一本机/局域网后端 */
 function applyApiBaseQueryOnce() {
@@ -40,8 +97,14 @@ function applyApiBaseQueryOnce() {
             return;
         }
         const v = raw.trim();
+        if (v && isAllowedApiBaseOverride(v)) {
+            window.localStorage.setItem(API_BASE_OVERRIDE_STORAGE_KEY, v);
+        } else if (v) {
+            removeStoredApiBaseOverride();
+            console.warn('Ignored untrusted SmartSpend API base override.');
+        }
+
         if (v) {
-            window.localStorage.setItem('SMARTSPEND_API_BASE_URL', v);
             const u = new URL(window.location.href);
             u.searchParams.delete('apiBase');
             window.history.replaceState(
@@ -63,18 +126,17 @@ function getBaseUrl() {
 
     const configuredBaseUrl = String(
         window.__SMARTSPEND_API_BASE_URL ||
-        window.localStorage?.getItem('SMARTSPEND_API_BASE_URL') ||
+        window.localStorage?.getItem(API_BASE_OVERRIDE_STORAGE_KEY) ||
         ''
     ).trim();
 
     if (configuredBaseUrl) {
         const normalized = configuredBaseUrl.replace(/\/+$/, '');
         if (shouldIgnoreLocalhostApiOverride(normalized)) {
-            try {
-                window.localStorage?.removeItem('SMARTSPEND_API_BASE_URL');
-            } catch {
-                // ignore
-            }
+            removeStoredApiBaseOverride();
+        } else if (!isAllowedApiBaseOverride(normalized)) {
+            removeStoredApiBaseOverride();
+            console.warn('Ignored untrusted SmartSpend API base override.');
         } else {
             return normalized;
         }
