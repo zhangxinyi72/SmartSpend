@@ -1,5 +1,5 @@
 import { getAnalyticsSummary, getAnalyticsByCategory, getSixMonthTrend } from './api.js';
-import { CATEGORIES, formatCurrency, getCategoryColor, requireAuth, showToast } from './utils.js';
+import { CATEGORIES, escapeHtml, formatCurrency, getCategoryColor, requireAuth, showToast } from './utils.js';
 import { renderPieChart, renderBarChart, renderLineChart } from './charts.js';
 
 if (!requireAuth()) {
@@ -73,7 +73,7 @@ async function loadData(period) {
     document.getElementById('pie-legend').innerHTML = categoryData.map(d => `
     <div class="pie-legend__item">
       <span class="pie-legend__dot" style="background:${d.color}"></span>
-      <span class="pie-legend__label">${d.category}</span>
+      <span class="pie-legend__label">${escapeHtml(d.category)}</span>
       <span class="pie-legend__amount">${formatCurrency(d.total)}</span>
       <span class="pie-legend__pct">${total > 0 ? ((d.total / total) * 100).toFixed(1) : 0}%</span>
     </div>`).join('');

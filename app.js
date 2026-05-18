@@ -32,6 +32,8 @@ const SMTP_FROM = process.env.SMTP_FROM || SMTP_USER || '';
 const APP_BASE_URL = process.env.APP_BASE_URL || `http://localhost:${PORT}`;
 const LEGACY_DATA_OWNER_EMAIL = normalizeEmail(process.env.LEGACY_DATA_OWNER_EMAIL || '');
 const DEMO_EMAIL = 'demo@smartspend.com';
+const REMOVE_DEMO_ARTIFACTS_ON_START = envFlagEnabled('SMARTSPEND_REMOVE_DEMO_ARTIFACTS');
+const MIGRATE_LEGACY_FINANCE_DATA_ON_START = envFlagEnabled('SMARTSPEND_MIGRATE_LEGACY_FINANCE_DATA');
 let indexesPromise = null;
 let mailTransporter = null;
 
@@ -101,6 +103,10 @@ function getIdFromPath(pathname) {
 
 function normalizeEmail(email) {
     return String(email || '').trim().toLowerCase();
+}
+
+function envFlagEnabled(name) {
+    return /^(1|true|yes|on)$/i.test(String(process.env[name] || '').trim());
 }
 
 function isValidEmail(email) {
@@ -683,8 +689,14 @@ async function initializeApp() {
         const db = client.db(DB_NAME);
         await db.command({ ping: 1 });
         await ensureIndexes(db);
-        await removeDemoArtifacts(db);
-        await migrateLegacyFinanceData(db);
+        if (REMOVE_DEMO_ARTIFACTS_ON_START) {
+            await removeDemoArtifacts(db);
+        }
+        if (MIGRATE_LEGACY_FINANCE_DATA_ON_START) {
+            await migrateLegacyFinanceData(db);
+        } else if (LEGACY_DATA_OWNER_EMAIL) {
+            console.log('Legacy finance migration is disabled; set SMARTSPEND_MIGRATE_LEGACY_FINANCE_DATA=true to run it intentionally.');
+        }
         console.log(`Connected to MongoDB database "${DB_NAME}" at ${MONGO_URL}`);
     } finally {
         await client.close();

@@ -183,7 +183,8 @@ Create **`.env`** from **`.env.example`**. Important groups:
 | `APP_BASE_URL` | Absolute base URL for links (local or deployed) |
 | `HF_*` | Hugging Face chat (required for `/api/chat`) |
 | `SMTP_*` | Email: verification, reset, notifications, budget alerts |
-| `BUDGET_ALERT_THRESHOLD`, `LEGACY_DATA_OWNER_EMAIL` | Alerts and optional legacy data migration hooks |
+| `BUDGET_ALERT_THRESHOLD` | Budget alert threshold |
+| `SMARTSPEND_REMOVE_DEMO_ARTIFACTS`, `SMARTSPEND_MIGRATE_LEGACY_FINANCE_DATA`, `LEGACY_DATA_OWNER_EMAIL` | Optional one-off maintenance/migration hooks; leave disabled during normal startup |
 
 **Security:** never commit **`.env`** or real tokens. For coursework ZIP submission, include **`.env.example`** only.
 
@@ -417,7 +418,7 @@ Typical request: UI calls **`js/api.js`** → **`fetch('/api/...')`** → **`app
 
 1. **Render:** Web service, **`npm install`** / **`npm start`**, set all env vars (especially **`MONGO_URL`** not localhost). Verify **`GET /healthz`**.  
 2. **Vercel:** Deploy static files; edit **`vercel.json`** so rewrites point to your Render URL.  
-3. Optional: in the browser, `localStorage.setItem('SMARTSPEND_API_BASE_URL', 'https://your-render-host')` if you bypass rewrites.
+3. If you bypass rewrites, configure the trusted Render URL in deployment code/configuration. Browser API-base overrides are restricted to same-origin, the default production API, and local/private development hosts.
 
 ---
 
