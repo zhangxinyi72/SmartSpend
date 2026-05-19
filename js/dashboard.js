@@ -1,6 +1,6 @@
 import { getExpenses, getBudgets } from './api.js';
 import {
-  formatCurrency, formatDateShort, getCategoryColor, getCategoryIcon,
+  escapeHtml, formatCurrency, formatDateShort, getCategoryColor, getCategoryIcon,
   getCurrentMonthLabel, getFirstName, getQueryParam, getStoredUser, requireAuth, showToast
 } from './utils.js';
 
@@ -81,10 +81,11 @@ function renderFilterChip() {
     return;
   }
   const color = getCategoryColor(_activeCategory);
+  const safeCategory = escapeHtml(_activeCategory);
   wrap.innerHTML = `
     <button class="filter-chip" id="clear-filter-btn">
       <span style="width:8px;height:8px;border-radius:50%;background:${color};display:inline-block;flex-shrink:0"></span>
-      ${_activeCategory}
+      ${safeCategory}
       <span class="filter-chip__x">✕</span>
     </button>`;
   document.getElementById('expenses-list-title').textContent = `${_activeCategory}`;
@@ -115,18 +116,22 @@ function renderExpenseList() {
   container.innerHTML = list.map(e => {
     const color = getCategoryColor(e.category);
     const icon  = getCategoryIcon(e.category);
+    const encodedId = encodeURIComponent(String(e.id || ''));
+    const safeDescription = escapeHtml(e.description || e.category);
+    const safeCategory = escapeHtml(e.category);
+    const safeDate = escapeHtml(formatDateShort(e.date));
     return `
       <div class="expense-row"
            style="--row-color:${color}"
-           onclick="location.href='expense.html?id=${e.id}'">
+           onclick="location.href='expense.html?id=${encodedId}'">
         <div class="expense-row__icon" style="background:${color}18">
           ${icon}
         </div>
         <div class="expense-row__info">
-          <div class="expense-row__desc">${e.description || e.category}</div>
+          <div class="expense-row__desc">${safeDescription}</div>
           <div class="expense-row__date">
-            <span class="category-tag" style="--tag-color:${color}">${e.category}</span>
-            &nbsp;${formatDateShort(e.date)}
+            <span class="category-tag" style="--tag-color:${color}">${safeCategory}</span>
+            &nbsp;${safeDate}
           </div>
         </div>
         <div class="expense-row__amount">−${formatCurrency(e.amount)}</div>

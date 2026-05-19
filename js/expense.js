@@ -1,7 +1,7 @@
 import { getExpenses, createExpense, updateExpense, deleteExpense, getBudgets } from './api.js';
 import {
   CATEGORIES, CATEGORY_COLORS, CATEGORY_ICONS,
-  formatCurrency, getCategoryColor, todayISO, getQueryParam, requireAuth, showToast
+  escapeHtml, formatCurrency, getCategoryColor, todayISO, getQueryParam, requireAuth, showToast
 } from './utils.js';
 
 if (!requireAuth()) {
@@ -69,18 +69,23 @@ async function renderRecentExpensesMobile() {
       return;
     }
 
-    list.innerHTML = latest.map(item => `
+    list.innerHTML = latest.map(item => {
+      const safeDescription = escapeHtml(item.description || item.category);
+      const safeCategory = escapeHtml(item.category);
+      const safeDate = escapeHtml(item.date);
+      return `
       <div class="expense-recent-mobile__item">
         <div>
-          <div class="expense-recent-mobile__name">${item.description || item.category}</div>
+          <div class="expense-recent-mobile__name">${safeDescription}</div>
           <div class="expense-recent-mobile__meta">
-            <span class="category-tag" style="--tag-color:${getCategoryColor(item.category)}">${item.category}</span>
-            <span>${item.date}</span>
+            <span class="category-tag" style="--tag-color:${getCategoryColor(item.category)}">${safeCategory}</span>
+            <span>${safeDate}</span>
           </div>
         </div>
         <div class="expense-recent-mobile__amount">${formatCurrency(item.amount)}</div>
       </div>
-    `).join('');
+    `;
+    }).join('');
   } catch {
     list.innerHTML = '<div class="empty-state"><div class="empty-state__text">Unable to load recent expenses</div></div>';
   }
