@@ -1,5 +1,5 @@
 import { getExpenses, getBudgets } from './api.js';
-import { formatCurrency, requireAuth } from './utils.js';
+import { escapeHtml, formatCurrency, requireAuth } from './utils.js';
 
 const dayMs = 24 * 60 * 60 * 1000;
 
@@ -143,25 +143,35 @@ function renderHome(insight) {
   const driverValue = insight.changeDriver.delta > 0
     ? `${insight.changeDriver.category} (${signedMoney(insight.changeDriver.delta)})`
     : 'Stable';
+  const safeHeadline = escapeHtml(insight.headline);
+  const safeCategorySentence = escapeHtml(insight.categorySentence);
+  const safeDriverSentence = escapeHtml(insight.driverSentence);
+  const safeTopCategory = escapeHtml(insight.topCategory.category);
+  const safeDriverValue = escapeHtml(driverValue);
+  const safeHighFrequencyCategory = escapeHtml(insight.highFrequency.category);
+  const safeNextAction = escapeHtml(insight.nextAction);
+  const safeAnomalyDescription = insight.anomaly
+    ? escapeHtml(insight.anomaly.description || insight.anomaly.category)
+    : '';
   const html = `
     <section class="pro-insight-grid" aria-label="SmartSpend analytical overview">
       <article class="pro-insight-card">
         <div class="pro-eyebrow">Data-driven Spending Story</div>
-        <h2 class="pro-insight-title">${insight.headline}</h2>
-        <p class="pro-insight-copy">${insight.categorySentence} ${insight.driverSentence}</p>
+        <h2 class="pro-insight-title">${safeHeadline}</h2>
+        <p class="pro-insight-copy">${safeCategorySentence} ${safeDriverSentence}</p>
         <div class="pro-metric-strip">
           <div class="pro-metric"><div class="pro-metric__label">7-day spend</div><div class="pro-metric__value">${formatCurrency(insight.total7)}</div></div>
-          <div class="pro-metric"><div class="pro-metric__label">Top category</div><div class="pro-metric__value">${insight.topCategory.category}</div></div>
-          <div class="pro-metric"><div class="pro-metric__label">Change driver</div><div class="pro-metric__value">${driverValue}</div></div>
+          <div class="pro-metric"><div class="pro-metric__label">Top category</div><div class="pro-metric__value">${safeTopCategory}</div></div>
+          <div class="pro-metric"><div class="pro-metric__label">Change driver</div><div class="pro-metric__value">${safeDriverValue}</div></div>
         </div>
       </article>
       <aside class="pro-insight-card">
         <div class="pro-eyebrow">Behavior Nudges</div>
         <div class="pro-nudge-list">
           <div class="pro-nudge ${toneClass}"><strong>Budget forecast:</strong> ${insight.projectedRemaining >= 0 ? `${formatCurrency(insight.projectedRemaining)} projected left this month.` : `${formatCurrency(Math.abs(insight.projectedRemaining))} projected over budget.`}</div>
-          <div class="pro-nudge pro-nudge--info"><strong>Frequency signal:</strong> ${insight.highFrequency.category} has ${Math.round(insight.highFrequency.total)} transactions in the last 30 days.</div>
-          <div class="pro-nudge pro-nudge--good"><strong>Next best action:</strong> ${insight.nextAction}</div>
-          ${insight.anomaly ? `<div class="pro-nudge pro-nudge--info"><strong>Unusual transaction:</strong> ${insight.anomaly.description || insight.anomaly.category} was ${formatCurrency(insight.anomaly.amount)}, above your 30-day average.</div>` : ''}
+          <div class="pro-nudge pro-nudge--info"><strong>Frequency signal:</strong> ${safeHighFrequencyCategory} has ${Math.round(insight.highFrequency.total)} transactions in the last 30 days.</div>
+          <div class="pro-nudge pro-nudge--good"><strong>Next best action:</strong> ${safeNextAction}</div>
+          ${insight.anomaly ? `<div class="pro-nudge pro-nudge--info"><strong>Unusual transaction:</strong> ${safeAnomalyDescription} was ${formatCurrency(insight.anomaly.amount)}, above your 30-day average.</div>` : ''}
         </div>
       </aside>
     </section>
@@ -181,15 +191,20 @@ function renderAnalytics(insight) {
   const driverChange = insight.changeDriver.delta > 0
     ? `${signedMoney(insight.changeDriver.delta)} / ${signedPct(insight.changeDriver.pctChange)}`
     : 'Stable';
+  const safeTopCategory = escapeHtml(insight.topCategory.category);
+  const safeChangeDriver = escapeHtml(
+    insight.changeDriver.delta > 0 ? insight.changeDriver.category : 'Stable'
+  );
+  const safeDriverChange = escapeHtml(driverChange);
   actionCard.insertAdjacentHTML('beforebegin', `
     <section class="pro-insight-card pro-analytics-story">
       <div class="pro-eyebrow">How to read this page</div>
       <h2 class="pro-insight-title">Top Category and Change Driver are not the same thing.</h2>
       <p class="pro-insight-copy"><strong>Top Category</strong> means the category with the largest total spend in the selected period. <strong>Change Driver</strong> means the category that increased the most versus the previous equal-length period.</p>
       <div class="pro-metric-strip">
-        <div class="pro-metric"><div class="pro-metric__label">Top category</div><div class="pro-metric__value">${insight.topCategory.category}</div></div>
-        <div class="pro-metric"><div class="pro-metric__label">Change driver</div><div class="pro-metric__value">${insight.changeDriver.delta > 0 ? insight.changeDriver.category : 'Stable'}</div></div>
-        <div class="pro-metric"><div class="pro-metric__label">Driver change</div><div class="pro-metric__value">${driverChange}</div></div>
+        <div class="pro-metric"><div class="pro-metric__label">Top category</div><div class="pro-metric__value">${safeTopCategory}</div></div>
+        <div class="pro-metric"><div class="pro-metric__label">Change driver</div><div class="pro-metric__value">${safeChangeDriver}</div></div>
+        <div class="pro-metric"><div class="pro-metric__label">Driver change</div><div class="pro-metric__value">${safeDriverChange}</div></div>
       </div>
     </section>
   `);

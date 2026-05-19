@@ -218,6 +218,18 @@ export function getCategoryIcon(category) {
 }
 
 /**
+ * Escape untrusted text before interpolating it into HTML templates.
+ */
+export function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/**
  * Show a toast notification (success or error)
  * @param {string} message
  * @param {'success'|'error'} type
@@ -233,7 +245,7 @@ export function showToast(message, type = 'success') {
 
   const toast = document.createElement('div');
   toast.className = `toast toast--${type}`;
-  toast.innerHTML = `${type === 'success' ? '✓' : '✕'} ${message}`;
+  toast.textContent = `${type === 'success' ? '✓' : '✕'} ${message}`;
   container.appendChild(toast);
 
   setTimeout(() => {
