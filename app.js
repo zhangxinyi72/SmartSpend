@@ -49,6 +49,12 @@ const CONTENT_TYPES = {
     '.webp': 'image/webp'
 };
 
+const PUBLIC_ROOT_EXTENSIONS = new Set(['.html', '.ico', '.png', '.jpg', '.jpeg', '.svg', '.gif', '.webp']);
+const PUBLIC_STATIC_DIRECTORY_EXTENSIONS = {
+    css: new Set(['.css']),
+    js: new Set(['.js'])
+};
+
 function readRequestBody(req) {
     return new Promise((resolve, reject) => {
         let body = '';
@@ -611,6 +617,37 @@ function getContentType(filePath) {
     return CONTENT_TYPES[path.extname(filePath).toLowerCase()] || 'application/octet-stream';
 }
 
+function parseRequestPathname(req) {
+    try {
+        const requestUrl = new URL(req.url, `http://${req.headers.host || `localhost:${PORT}`}`);
+        return decodeURIComponent(requestUrl.pathname);
+    } catch {
+        return null;
+    }
+}
+
+function isPublicStaticFile(filePath) {
+    const resolvedRoot = path.resolve(STATIC_ROOT);
+    const relativePath = path.relative(resolvedRoot, filePath);
+
+    if (!relativePath || relativePath.startsWith('..') || path.isAbsolute(relativePath)) {
+        return false;
+    }
+
+    const segments = relativePath.split(path.sep);
+    if (segments.some(segment => segment.startsWith('.'))) {
+        return false;
+    }
+
+    const ext = path.extname(relativePath).toLowerCase();
+    if (segments.length === 1) {
+        return PUBLIC_ROOT_EXTENSIONS.has(ext);
+    }
+
+    const [topLevelDirectory] = segments;
+    return PUBLIC_STATIC_DIRECTORY_EXTENSIONS[topLevelDirectory]?.has(ext) || false;
+}
+
 async function removeDemoArtifacts(db) {
     const usersCollection = db.collection('users');
     const expensesCollection = db.collection('expenses');
@@ -736,6 +773,10 @@ async function resolveStaticFile(pathname) {
     const resolvedRoot = path.resolve(STATIC_ROOT);
 
     if (resolvedPath !== resolvedRoot && !resolvedPath.startsWith(`${resolvedRoot}${path.sep}`)) {
+        return null;
+    }
+
+    if (!isPublicStaticFile(resolvedPath)) {
         return null;
     }
 
@@ -937,8 +978,11 @@ async function maybeSendBudgetAlert({ user, expense, usersCollection, expensesCo
 }
 
 const server = http.createServer((req, res) => {
-    const requestUrl = new URL(req.url, `http://${req.headers.host || `localhost:${PORT}`}`);
-    const pathname = decodeURIComponent(requestUrl.pathname);
+    const pathname = parseRequestPathname(req);
+    if (!pathname) {
+        sendText(res, 400, 'Bad Request');
+        return;
+    }
 
     if (req.method === 'OPTIONS') {
         res.writeHead(200, {
@@ -1859,25 +1903,33 @@ const server = http.createServer((req, res) => {
     });
 });
 
-initializeApp()
-    .then(() => {
-        server
-            .listen(PORT, () => {
-                console.log(`Server is running at http://localhost:${PORT}`);
-            })
-            .on('error', err => {
-                if (err && err.code === 'EADDRINUSE') {
-                    console.error(
-                        `[SmartSpend] Port ${PORT} is already in use. Another process (often an older \`node app.js\` or \`npm start\`) is listening.\n` +
-                            `  • Stop it:  lsof -nP -iTCP:${PORT} -sTCP:LISTEN   then   kill <PID>\n` +
-                            `  • Or use a different port:  PORT=3002 npm start`
-                    );
-                    process.exit(1);
-                }
-                throw err;
-            });
-    })
-    .catch(error => {
-        console.error(`Failed to start SmartSpend: ${error.message || error}`);
-        process.exit(1);
-    });
+if (process.env.SMARTSPEND_SKIP_SERVER_START === '1') {
+    module.exports = {
+        isPublicStaticFile,
+        parseRequestPathname,
+        resolveStaticFile
+    };
+} else {
+    initializeApp()
+        .then(() => {
+            server
+                .listen(PORT, () => {
+                    console.log(`Server is running at http://localhost:${PORT}`);
+                })
+                .on('error', err => {
+                    if (err && err.code === 'EADDRINUSE') {
+                        console.error(
+                            `[SmartSpend] Port ${PORT} is already in use. Another process (often an older \`node app.js\` or \`npm start\`) is listening.\n` +
+                                `  • Stop it:  lsof -nP -iTCP:${PORT} -sTCP:LISTEN   then   kill <PID>\n` +
+                                `  • Or use a different port:  PORT=3002 npm start`
+                        );
+                        process.exit(1);
+                    }
+                    throw err;
+                });
+        })
+        .catch(error => {
+            console.error(`Failed to start SmartSpend: ${error.message || error}`);
+            process.exit(1);
+        });
+}

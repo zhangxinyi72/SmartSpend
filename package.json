@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node start-smartspend.cjs",
+    "test": "node --test",
     "seed:demo": "node scripts/seed-demo-user.cjs"
   },
   "dependencies": {
