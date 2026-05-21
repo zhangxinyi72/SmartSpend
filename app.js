@@ -757,6 +757,18 @@ async function serveStaticFile(pathname, res) {
     res.end(data);
 }
 
+function parseRequestUrl(req) {
+    try {
+        const requestUrl = new URL(req.url, `http://${req.headers.host || `localhost:${PORT}`}`);
+        return {
+            requestUrl,
+            pathname: decodeURIComponent(requestUrl.pathname)
+        };
+    } catch {
+        return null;
+    }
+}
+
 async function getAuthenticatedUser(req, usersCollection) {
     const authHeader = req.headers.authorization || '';
 
@@ -937,8 +949,13 @@ async function maybeSendBudgetAlert({ user, expense, usersCollection, expensesCo
 }
 
 const server = http.createServer((req, res) => {
-    const requestUrl = new URL(req.url, `http://${req.headers.host || `localhost:${PORT}`}`);
-    const pathname = decodeURIComponent(requestUrl.pathname);
+    const parsedRequest = parseRequestUrl(req);
+    if (!parsedRequest) {
+        sendJson(res, 400, { error: 'Malformed request URL' });
+        return;
+    }
+
+    const { requestUrl, pathname } = parsedRequest;
 
     if (req.method === 'OPTIONS') {
         res.writeHead(200, {
