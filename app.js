@@ -937,8 +937,16 @@ async function maybeSendBudgetAlert({ user, expense, usersCollection, expensesCo
 }
 
 const server = http.createServer((req, res) => {
-    const requestUrl = new URL(req.url, `http://${req.headers.host || `localhost:${PORT}`}`);
-    const pathname = decodeURIComponent(requestUrl.pathname);
+    let requestUrl;
+    let pathname;
+
+    try {
+        requestUrl = new URL(req.url, `http://${req.headers.host || `localhost:${PORT}`}`);
+        pathname = decodeURIComponent(requestUrl.pathname);
+    } catch {
+        sendJson(res, 400, { error: 'Malformed request URL' });
+        return;
+    }
 
     if (req.method === 'OPTIONS') {
         res.writeHead(200, {
