@@ -90,12 +90,16 @@ function waitForServer(child) {
 }
 
 function requestMalformedPath(port) {
+    return requestPathStatus(port, '/%E0%A4%A');
+}
+
+function requestPathStatus(port, requestPath) {
     return new Promise((resolve, reject) => {
         const req = http.get(
             {
                 host: '127.0.0.1',
                 port,
-                path: '/%E0%A4%A'
+                path: requestPath
             },
             response => {
                 response.resume();
@@ -132,6 +136,9 @@ test('malformed percent-encoded request paths return 400 instead of crashing the
 
     const statusCode = await requestMalformedPath(port);
     assert.equal(statusCode, 400);
+
+    const healthStatusCode = await requestPathStatus(port, '/healthz');
+    assert.equal(healthStatusCode, 200);
 
     assert.equal(child.exitCode, null);
 });
