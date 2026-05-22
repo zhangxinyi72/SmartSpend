@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "test": "node --test",
     "start": "node start-smartspend.cjs",
     "seed:demo": "node scripts/seed-demo-user.cjs"
   },
