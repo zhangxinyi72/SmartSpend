@@ -28,6 +28,58 @@ const DEFAULT_PRODUCTION_API_BASE = 'https://smartspend-ccwe.onrender.com';
 
 let apiBaseQueryChecked = false;
 
+function isLoopbackHost(hostname) {
+    return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1' || hostname === '[::1]';
+}
+
+function isPrivateIpv4Host(hostname) {
+    const parts = hostname.split('.').map(part => Number(part));
+    if (parts.length !== 4 || parts.some(part => !Number.isInteger(part) || part < 0 || part > 255)) {
+        return false;
+    }
+
+    return parts[0] === 10 ||
+        (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) ||
+        (parts[0] === 192 && parts[1] === 168);
+}
+
+function isLocalOrPrivateHost(hostname) {
+    return isLoopbackHost(hostname) || isPrivateIpv4Host(hostname);
+}
+
+function isLocalOrPrivatePage() {
+    return window.location.protocol === 'file:' || isLocalOrPrivateHost(window.location.hostname);
+}
+
+function normalizeApiBaseUrl(urlStr) {
+    const rawUrl = String(urlStr || '').trim();
+    if (!rawUrl) {
+        return '';
+    }
+
+    try {
+        const url = new URL(rawUrl, window.location.origin);
+        if (!['http:', 'https:'].includes(url.protocol)) {
+            return '';
+        }
+        return url.href.replace(/\/+$/, '');
+    } catch {
+        return '';
+    }
+}
+
+function isTrustedStoredApiBase(normalizedUrl) {
+    try {
+        const url = new URL(normalizedUrl);
+        const productionUrl = new URL(DEFAULT_PRODUCTION_API_BASE);
+        return url.origin === window.location.origin ||
+            url.origin === productionUrl.origin ||
+            (isLocalOrPrivatePage() && isLocalOrPrivateHost(url.hostname));
+    } catch {
+        return false;
+    }
+}
+
 /** 在地址栏用一次，例如 &apiBase=http%3A%2F%2F192.168.1.10%3A3001  让手机与电脑用同一本机/局域网后端 */
 function applyApiBaseQueryOnce() {
     if (apiBaseQueryChecked) {
@@ -39,9 +91,17 @@ function applyApiBaseQueryOnce() {
         if (!raw) {
             return;
         }
-        const v = raw.trim();
-        if (v) {
+        const v = normalizeApiBaseUrl(raw.trim());
+        if (v && isTrustedStoredApiBase(v)) {
             window.localStorage.setItem('SMARTSPEND_API_BASE_URL', v);
+            const u = new URL(window.location.href);
+            u.searchParams.delete('apiBase');
+            window.history.replaceState(
+                null,
+                '',
+                `${u.pathname}${u.search}${u.hash}` || u.pathname
+            );
+        } else {
             const u = new URL(window.location.href);
             u.searchParams.delete('apiBase');
             window.history.replaceState(
@@ -61,22 +121,31 @@ function getBaseUrl() {
     }
     applyApiBaseQueryOnce();
 
-    const configuredBaseUrl = String(
-        window.__SMARTSPEND_API_BASE_URL ||
-        window.localStorage?.getItem('SMARTSPEND_API_BASE_URL') ||
-        ''
-    ).trim();
+    const configuredBaseUrl = normalizeApiBaseUrl(String(window.__SMARTSPEND_API_BASE_URL || '').trim());
 
     if (configuredBaseUrl) {
-        const normalized = configuredBaseUrl.replace(/\/+$/, '');
-        if (shouldIgnoreLocalhostApiOverride(normalized)) {
+        if (shouldIgnoreLocalhostApiOverride(configuredBaseUrl)) {
             try {
                 window.localStorage?.removeItem('SMARTSPEND_API_BASE_URL');
             } catch {
                 // ignore
             }
         } else {
-            return normalized;
+            return configuredBaseUrl;
+        }
+    }
+
+    const storedBaseUrl = normalizeApiBaseUrl(String(window.localStorage?.getItem('SMARTSPEND_API_BASE_URL') || '').trim());
+
+    if (storedBaseUrl) {
+        if (shouldIgnoreLocalhostApiOverride(storedBaseUrl) || !isTrustedStoredApiBase(storedBaseUrl)) {
+            try {
+                window.localStorage?.removeItem('SMARTSPEND_API_BASE_URL');
+            } catch {
+                // ignore
+            }
+        } else {
+            return storedBaseUrl;
         }
     }
 
