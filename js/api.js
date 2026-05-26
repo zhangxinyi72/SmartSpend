@@ -52,8 +52,13 @@ function isLocalOrPrivatePage() {
 }
 
 function normalizeApiBaseUrl(urlStr) {
+    const rawUrl = String(urlStr || '').trim();
+    if (!rawUrl) {
+        return '';
+    }
+
     try {
-        const url = new URL(urlStr, window.location.origin);
+        const url = new URL(rawUrl, window.location.origin);
         if (!['http:', 'https:'].includes(url.protocol)) {
             return '';
         }
