@@ -417,7 +417,12 @@ Typical request: UI calls **`js/api.js`** → **`fetch('/api/...')`** → **`app
 
 1. **Render:** Web service, **`npm install`** / **`npm start`**, set all env vars (especially **`MONGO_URL`** not localhost). Verify **`GET /healthz`**.  
 2. **Vercel:** Deploy static files; edit **`vercel.json`** so rewrites point to your Render URL.  
-3. Optional: in the browser, `localStorage.setItem('SMARTSPEND_API_BASE_URL', 'https://your-render-host')` if you bypass rewrites.
+3. Optional: if you bypass rewrites, set the API host from deployment-owned page config before `js/api.js` loads, for example:
+   ```html
+   <script>
+     window.__SMARTSPEND_API_BASE_URL = 'https://your-render-host';
+   </script>
+   ```
 
 ---
 
